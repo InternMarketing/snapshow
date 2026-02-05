@@ -3,7 +3,7 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
-  background: #000;
+  background: #050b14;
   overflow: hidden;
   font-family: system-ui, sans-serif;
 }
@@ -13,7 +13,12 @@ html, body {
   position: relative;
   width: 100vw;
   height: 100vh;
-  background: radial-gradient(circle at center, #1a1a1a 0%, #000 70%);
+  background: radial-gradient(
+    circle at center,
+    #2a3f5f 0%,
+    #0a1424 70%,
+    #02060c 100%
+  );
 }
 
 /* Stage */
@@ -26,18 +31,19 @@ html, body {
   align-items: center;
 }
 
-/* Spotlight */
+/* Spotlight (cool blue) */
 #spotlight {
   position: absolute;
-  width: 70%;
-  height: 80%;
+  width: 75%;
+  height: 85%;
   background: radial-gradient(
     ellipse at center,
-    rgba(255,255,255,0.18) 0%,
-    rgba(255,255,255,0.05) 40%,
-    transparent 70%
+    rgba(120, 180, 255, 0.35) 0%,
+    rgba(120, 180, 255, 0.18) 35%,
+    rgba(120, 180, 255, 0.08) 55%,
+    transparent 75%
   );
-  filter: blur(60px);
+  filter: blur(55px);
   z-index: 1;
   pointer-events: none;
 }
@@ -48,16 +54,18 @@ html, body {
   z-index: 2;
 }
 
-/* Image itself */
+/* Image */
 .stage-image {
   max-width: 50vw;
   max-height: 50vh;
   object-fit: contain;
   animation: stageFade 3s ease-in-out forwards;
-  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.7));
+  filter:
+    drop-shadow(0 20px 40px rgba(0,0,0,0.6))
+    drop-shadow(0 0 30px rgba(120,180,255,0.35));
 }
 
-/* Animation */
+/* Fade animation */
 @keyframes stageFade {
   0% {
     opacity: 0;
