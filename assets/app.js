@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(nextSlide, 8000);
 });
 
-/* ===== FETCH IMAGES ===== */
+/* ===== FETCH ===== */
 async function fetchImages() {
   try {
     const res = await fetch("feed.php");
@@ -31,7 +31,7 @@ async function fetchImages() {
   }
 }
 
-/* ===== RENDER SLIDES ===== */
+/* ===== RENDER ===== */
 function renderSlides() {
   cinema.innerHTML = "";
 
@@ -47,15 +47,21 @@ function renderSlides() {
   });
 
   currentIndex = 0;
-  activateSlide(0);
+  updateStage();
 }
 
-/* ===== ACTIVATE SLIDE ===== */
-function activateSlide(index) {
+/* ===== UPDATE STAGE ===== */
+function updateStage() {
   const slides = cinema.querySelectorAll(".slide");
 
   slides.forEach((slide, i) => {
-    slide.classList.toggle("active", i === index);
+    slide.classList.remove("active", "prev");
+
+    if (i === currentIndex) {
+      slide.classList.add("active");
+    } else if (i === (currentIndex - 1 + slides.length) % slides.length) {
+      slide.classList.add("prev");
+    }
   });
 }
 
@@ -64,5 +70,5 @@ function nextSlide() {
   if (images.length === 0) return;
 
   currentIndex = (currentIndex + 1) % images.length;
-  activateSlide(currentIndex);
+  updateStage();
 }
