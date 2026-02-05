@@ -3,45 +3,34 @@ body {
   font-family: system-ui;
   background: black;
   color: white;
-  text-align: center;
 }
 
-.stage {
+/* FULL SCREEN CENTER STAGE */
+#slideshow {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: black;
   overflow: hidden;
 }
 
-#stage {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  background: radial-gradient(circle at center, #333, #000);
+/* IMAGE BEHAVIOR */
+#slideshow img {
+  max-width: 100vw;
+  max-height: 100vh;
+
+  width: auto;
+  height: auto;
+
+  object-fit: contain;
+  display: block;
 }
 
-#spotlight {
-  position: absolute;
-  width: 60%;
-  height: 80%;
-  top: 10%;
-  left: 20%;
-  background: radial-gradient(circle, rgba(255,255,255,.15), transparent);
-}
-
-#slide {
-  position: absolute;
-  max-width: 50vw;
-  max-height: 60vh;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.8);
-  opacity: 0;
-  transition: all 1s ease;
-}
-
-#slide.show {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-
+/* keep your other pages safe */
 .gallery img,
 label img {
   width: 150px;
