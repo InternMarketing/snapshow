@@ -1,34 +1,73 @@
 <?php
-session_start();
-if (!isset($_SESSION['viewer'])) die("Access denied");
-
 $images = glob("uploads/*.{jpg,jpeg,png,gif,webp}", GLOB_BRACE);
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Thank You!</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-.gallery img { width:150px; margin:5px }
-</style>
+    <meta charset="UTF-8">
+    <title>SnapShow Gallery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui;
+            background: #000;
+            color: #fff;
+            text-align: center;
+        }
+
+        h2 {
+            margin: 20px 0;
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .gallery label {
+            cursor: pointer;
+        }
+
+        .gallery img {
+            width: 150px;
+            height: auto;
+            border-radius: 6px;
+            transition: transform 0.2s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        button {
+            margin: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
-<h2>Thank you for sharing! ❤️</h2>
+<h2>Thank you for sharing ❤️</h2>
 
 <form method="POST" action="download.php">
-<div class="gallery">
-<?php foreach ($images as $img): ?>
-  <label>
-    <input type="checkbox" name="files[]" value="<?= htmlspecialchars($img) ?>">
-    <img src="<?= htmlspecialchars($img) ?>">
-  </label>
-<?php endforeach; ?>
-</div>
+    <div class="gallery">
+        <?php foreach ($images as $img): ?>
+            <label>
+                <input type="checkbox" name="files[]" value="<?= htmlspecialchars($img) ?>">
+                <br>
+                <img src="<?= htmlspecialchars($img) ?>" alt="">
+            </label>
+        <?php endforeach; ?>
+    </div>
 
-<br>
-<button type="submit">Download Selected</button>
+    <button type="submit">Download Selected</button>
 </form>
 
 </body>
