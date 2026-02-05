@@ -1,4 +1,3 @@
-/* ===== RESET ===== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -12,7 +11,7 @@ html, body {
   overflow: hidden;
 }
 
-/* ===== STAGE ===== */
+/* STAGE */
 .stage {
   width: 100vw;
   height: 100vh;
@@ -23,14 +22,14 @@ html, body {
   justify-content: center;
 }
 
-/* ===== CINEMA ===== */
+/* CINEMA */
 .cinema {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
-/* ===== SLIDES ===== */
+/* SLIDES — ALL VISIBLE */
 .slide {
   position: absolute;
   inset: 0;
@@ -39,42 +38,14 @@ html, body {
   align-items: center;
   justify-content: center;
 
-  opacity: 0;
-  transition:
-    opacity 0.6s ease,
-    transform 0.8s ease;
-
-  z-index: 0;
+  transition: transform 1s ease;
 }
 
-/* FRONT SLIDE */
-.slide.active {
-  opacity: 1;
-  transform: scale(1) translateY(0);
-  z-index: 3;
-}
-
-/* BACK SLIDE (CLEARLY VISIBLE) */
-.slide.prev {
-  opacity: 1;
-  transform: scale(0.88) translateY(6%);
-  z-index: 2;
-  filter: brightness(0.6);
-}
-
-/* ===== IMAGE ===== */
+/* IMAGE */
 .slide img {
   max-width: 100%;
   max-height: 100%;
-
-  width: auto;
-  height: auto;
-
   object-fit: contain;
-  object-position: center;
-
-  display: block;
   background: black;
-
-  box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+  box-shadow: 0 25px 70px rgba(0,0,0,0.7);
 }
