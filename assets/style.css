@@ -13,12 +13,12 @@ html, body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* ===== STAGE (THE SCREEN) ===== */
+/* ===== STAGE (FULL SCREEN, BLACK) ===== */
 .stage {
   position: relative;
   width: 100vw;
   height: 100vh;
-  background: #000;            /* black bars live here */
+  background: #000;
 
   display: flex;
   align-items: center;
@@ -43,22 +43,27 @@ html, body {
   z-index: 2;
 }
 
-/* ===== CINEMA IMAGE ===== */
+/* ===== CINEMA FRAME (THIS FIXES EVERYTHING) ===== */
+.slide::before {
+  content: "";
+  position: absolute;
+  width: 90vw;
+  height: 90vh;
+  background: #000;
+}
+
+/* ===== IMAGE (CINEMA SAFE) ===== */
 .slide img {
-  /* THIS IS THE ENTIRE MAGIC */
-  max-width: 100vw;
-  max-height: 100vh;
+  position: relative;        /* above the frame */
+  max-width: 90vw;
+  max-height: 90vh;
 
   width: auto;
   height: auto;
 
-  object-fit: contain;         /* preserves ratio */
+  object-fit: contain;
   object-position: center;
 
-  background: #000;            /* blends into bars */
-}
-
-/* ===== LOADING PLACEHOLDER ===== */
-.slide.loading {
   background: #000;
+  display: block;
 }
