@@ -21,14 +21,15 @@ body {
    ======================= */
 #slideshow {
   position: absolute;
-  inset: 0; /* top right bottom left = 0 */
+  inset: 0;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  z-index: 5;
+  z-index: 3;
 }
+
 
 /* IMAGE FIT — CINEMA SAFE */
 #slideshow img {
@@ -50,11 +51,11 @@ body {
   inset: 0;
   background: radial-gradient(
     circle at center,
-    rgba(255,255,255,0.15),
-    rgba(0,0,0,0.9) 70%
+    rgba(255,255,255,0.18),
+    rgba(0,0,0,0.95) 70%
   );
   pointer-events: none;
-  z-index: 4;
+  z-index: 2;
 }
 
 /* =======================
@@ -131,7 +132,7 @@ label img {
   transform: scale(0.9);
   transition: opacity 1s ease, transform 1s ease;
 
-  z-index: 5;
+  z-index: 3;
 }
 
 .slide.show {
