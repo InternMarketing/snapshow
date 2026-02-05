@@ -5,22 +5,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const qrBox = document.getElementById('qrCanvas');
 
   if (!overlay || !showBtn || !closeBtn || !qrBox) {
-    console.error('❌ QR elements missing in HTML');
+    console.error('❌ QR elements missing');
     return;
   }
 
-  let qr = null;
+  // Safety check: QRCode library loaded
+  if (typeof QRCode === 'undefined') {
+    console.error('❌ QRCode library not loaded');
+    return;
+  }
+
+  let qrInstance = null;
 
   showBtn.addEventListener('click', () => {
     overlay.classList.add('active');
 
-    if (!qr) {
-      qr = new QRCode(qrBox, {
+    // Generate QR only once
+    if (!qrInstance) {
+      qrBox.innerHTML = ''; // extra safety
+      qrInstance = new QRCode(qrBox, {
         text: window.location.href,
         width: 300,
         height: 300,
-        colorDark: "#ffffff",
-        colorLight: "#000000",
+        colorDark: '#ffffff',
+        colorLight: '#000000',
         correctLevel: QRCode.CorrectLevel.H
       });
     }
