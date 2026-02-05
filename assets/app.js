@@ -1,52 +1,49 @@
-let cinema;
-let images = [];
+document.addEventListener('DOMContentLoaded', () => {
+    const slideshow = document.getElementById('slideshow');
 
-/* INIT */
-document.addEventListener("DOMContentLoaded", () => {
-  cinema = document.querySelector(".cinema");
-  fetchImages();
-  setInterval(fetchImages, 2000);
-});
-
-/* FETCH */
-async function fetchImages() {
-  try {
-    const res = await fetch("feed.php");
-    const data = await res.json();
-
-    if (JSON.stringify(data) !== JSON.stringify(images)) {
-      images = data;
-      renderSlides();
+    if (!slideshow) {
+        console.error('❌ #slideshow NOT FOUND');
+        return;
     }
-  } catch (e) {
-    console.error(e);
-  }
+
+    let images = [];
+    let index = 0;
+
+    async function fetchImages() {
+        try {
+            const res = await fetch('feed.php');
+            const data = await res.json();
+            if (Array.isArray(data)) images = data;
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    function showNextImage() {
+    if (!images.length) return;
+
+    slideshow.innerHTML = '';
+
+    const img = document.createElement('img');
+    img.src = images[index];
+    img.alt = 'SnapShow Image';
+
+    /* 🔒 FORCE SIZE: ~HALF SCREEN */
+    img.style.maxWidth = '60vw';
+    img.style.maxHeight = '75vh';
+    img.style.width = 'auto';
+    img.style.height = 'auto';
+    img.style.objectFit = 'contain';
+
+    slideshow.appendChild(img);
+
+    index = (index + 1) % images.length;
 }
 
-/* RENDER — STACK EVERYTHING */
-function renderSlides() {
-  cinema.innerHTML = "";
+    fetchImages().then(() => {
+        showNextImage();
+        setInterval(showNextImage, 3000);
+    });
 
-  const total = images.length;
-
-  images.forEach((src, index) => {
-    const slide = document.createElement("div");
-    slide.className = "slide";
-
-    const img = document.createElement("img");
-    img.src = src;
-
-    /* STAGE DEPTH */
-    const depth = total - index - 1;
-    const scale = 1 - depth * 0.06;
-    const offset = depth * 5;
-
-    slide.style.transform =
-      `scale(${scale}) translateY(${offset}%)`;
-
-    slide.style.zIndex = index + 1;
-
-    slide.appendChild(img);
-    cinema.appendChild(slide);
-  });
-}
+    setInterval(fetchImages, 5000);
+});
