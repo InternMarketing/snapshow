@@ -57,18 +57,14 @@ function updateStage() {
 
   if (total === 0) return;
 
-  slides.forEach((slide) => {
-    slide.classList.remove("active", "prev", "prev2");
+  slides.forEach(slide => {
+    slide.classList.remove("active", "prev");
   });
 
   slides[currentIndex].classList.add("active");
 
   if (total > 1) {
     slides[(currentIndex - 1 + total) % total].classList.add("prev");
-  }
-
-  if (total > 2) {
-    slides[(currentIndex - 2 + total) % total].classList.add("prev2");
   }
 }
 
