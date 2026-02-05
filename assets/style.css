@@ -1,8 +1,9 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: #000;
+  width: 100%;
   height: 100%;
+  background: #111;
   overflow: hidden;
 }
 
@@ -10,63 +11,27 @@ html, body {
   position: relative;
   width: 100vw;
   height: 100vh;
+  background: #222;
 }
 
 #stage {
   position: relative;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center, #222 0%, #000 70%);
+  background: radial-gradient(circle at center, #333 0%, #000 70%);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-#spotlight {
-  position: absolute;
-  width: 60%;
-  height: 80%;
-  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-  filter: blur(40px);
-  z-index: 1;
-}
-
 #image-container {
   position: relative;
-  z-index: 2;
+  z-index: 10;
 }
 
 .stage-image {
   max-width: 50vw;
   max-height: 50vh;
   object-fit: contain;
-  animation: fadeIn 1s ease, fadeOut 1s ease 2s forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-@keyframes fadeOut {
-  to { opacity: 0; transform: scale(0.9); }
-}
-
-/* Side light beams */
-.side-beam {
-  position: absolute;
-  top: 0;
-  width: 20vw;
-  height: 100%;
-  background: linear-gradient(to center, rgba(255,255,255,0.08), transparent);
-  z-index: 0;
-}
-
-.side-beam.left {
-  left: 0;
-}
-
-.side-beam.right {
-  right: 0;
-  transform: scaleX(-1);
+  background: #000;
 }
