@@ -1,13 +1,13 @@
 <?php
 header("Content-Type: application/json");
 
-$files = [];
 $dir = __DIR__ . "/uploads";
+$files = [];
 
 if (is_dir($dir)) {
-  foreach (scandir($dir) as $f) {
-    if (preg_match('/\.(jpg|jpeg|png|gif)$/i', $f)) {
-      $files[] = "/snapshow/uploads/" . $f;
+  foreach (scandir($dir) as $file) {
+    if (preg_match('/\.(jpg|jpeg|png|gif)$/i', $file)) {
+      $files[] = "/uploads/" . $file; // ✅ ROOT path
     }
   }
 }
