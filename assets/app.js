@@ -1,10 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const slideshow = document.getElementById('slideshow');
-
-    if (!slideshow) {
-        console.error('#slideshow not found');
-        return;
-    }
+    if (!slideshow) return;
 
     let images = [];
     let index = 0;
@@ -22,20 +18,35 @@ document.addEventListener('DOMContentLoaded', () => {
     function showNextImage() {
         if (!images.length) return;
 
-        slideshow.innerHTML = '';
+        // remove previous slide
+        const old = slideshow.querySelector('.slide');
+        if (old) {
+            old.classList.remove('show');
+            setTimeout(() => old.remove(), 1000);
+        }
+
+        // create new slide
+        const slide = document.createElement('div');
+        slide.className = 'slide';
 
         const img = document.createElement('img');
         img.src = images[index];
         img.alt = 'SnapShow Image';
 
-        slideshow.appendChild(img);
+        slide.appendChild(img);
+        slideshow.appendChild(slide);
+
+        // trigger animation
+        requestAnimationFrame(() => {
+            slide.classList.add('show');
+        });
 
         index = (index + 1) % images.length;
     }
 
     fetchImages().then(() => {
         showNextImage();
-        setInterval(showNextImage, 3000);
+        setInterval(showNextImage, 3500);
     });
 
     setInterval(fetchImages, 5000);
