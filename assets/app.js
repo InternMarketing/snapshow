@@ -1,22 +1,14 @@
 let cinema;
 let images = [];
-let currentIndex = 0;
 
-/* ===== INIT ===== */
+/* INIT */
 document.addEventListener("DOMContentLoaded", () => {
   cinema = document.querySelector(".cinema");
-
-  if (!cinema) {
-    console.error("Cinema container not found");
-    return;
-  }
-
   fetchImages();
   setInterval(fetchImages, 2000);
-  setInterval(nextSlide, 8000);
 });
 
-/* ===== FETCH ===== */
+/* FETCH */
 async function fetchImages() {
   try {
     const res = await fetch("feed.php");
@@ -27,51 +19,34 @@ async function fetchImages() {
       renderSlides();
     }
   } catch (e) {
-    console.error("Feed error:", e);
+    console.error(e);
   }
 }
 
-/* ===== RENDER ===== */
+/* RENDER — STACK EVERYTHING */
 function renderSlides() {
   cinema.innerHTML = "";
 
-  images.forEach((src) => {
+  const total = images.length;
+
+  images.forEach((src, index) => {
     const slide = document.createElement("div");
     slide.className = "slide";
 
     const img = document.createElement("img");
     img.src = src;
 
+    /* STAGE DEPTH */
+    const depth = total - index - 1;
+    const scale = 1 - depth * 0.06;
+    const offset = depth * 5;
+
+    slide.style.transform =
+      `scale(${scale}) translateY(${offset}%)`;
+
+    slide.style.zIndex = index + 1;
+
     slide.appendChild(img);
     cinema.appendChild(slide);
   });
-
-  currentIndex = 0;
-  updateStage();
-}
-
-/* ===== UPDATE STAGE ===== */
-function updateStage() {
-  const slides = cinema.querySelectorAll(".slide");
-  const total = slides.length;
-
-  if (total === 0) return;
-
-  slides.forEach(slide => {
-    slide.classList.remove("active", "prev");
-  });
-
-  slides[currentIndex].classList.add("active");
-
-  if (total > 1) {
-    slides[(currentIndex - 1 + total) % total].classList.add("prev");
-  }
-}
-
-/* ===== NEXT ===== */
-function nextSlide() {
-  if (images.length === 0) return;
-
-  currentIndex = (currentIndex + 1) % images.length;
-  updateStage();
 }
