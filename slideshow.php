@@ -1,30 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>SnapShow</title>
-    <link rel="stylesheet" href="assets/style.css">
+  <meta charset="UTF-8">
+  <title>SnapShow Stage</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="stage">
+  <div id="stage-wrapper">
+    <div class="side-beam left"></div>
+    <div class="side-beam right"></div>
 
-    <!-- Side light beams -->
-    <div class="light-beam left"></div>
-    <div class="light-beam right"></div>
+    <div id="stage">
+      <div id="spotlight"></div>
+      <div id="image-container"></div>
+    </div>
+  </div>
 
-    <!-- Curtains (THIS FIXES THE BLACK SIDES) -->
-    <div class="curtain left"></div>
-    <div class="curtain right"></div>
-
-    <!-- Spotlight -->
-    <div id="spotlight"></div>
-
-    <!-- Slideshow -->
-    <div id="slideshow"></div>
-
-</div>
-
-<script src="assets/app.js?v=2"></script>
+  <script src="app.js"></script>
 </body>
 </html>
