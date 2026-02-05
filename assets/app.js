@@ -10,7 +10,7 @@ let index = 0;
 
 async function fetchImages() {
   try {
-    const res = await fetch("feed.php");
+    const res = await fetch("/feed.php");
     images = await res.json();
   } catch (e) {
     console.error("Failed to load images", e);
