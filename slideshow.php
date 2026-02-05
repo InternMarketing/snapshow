@@ -6,15 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="assets/style.css">
+  <script src="assets/app.js" defer></script>
 </head>
 <body>
 
   <div class="stage">
-    <div class="cinema">
-      <!-- slides injected here -->
-    </div>
+    <div class="cinema"></div>
   </div>
 
-  <script src="assets/app.js"></script>
 </body>
 </html>
