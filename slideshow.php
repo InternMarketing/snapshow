@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>SnapShow Stage</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
 
@@ -17,6 +17,6 @@
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <script src="/assets/app.js"></script>
 </body>
 </html>
