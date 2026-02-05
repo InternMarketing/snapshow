@@ -1,8 +1,8 @@
-const stage = document.querySelector(".stage");
+const cinema = document.querySelector(".cinema");
 let images = [];
 let currentIndex = 0;
 
-/* ===== FETCH IMAGE LIST ===== */
+/* ===== FETCH IMAGES ===== */
 async function fetchImages() {
   try {
     const res = await fetch("feed.php");
@@ -17,56 +17,42 @@ async function fetchImages() {
   }
 }
 
-/* ===== RENDER SLIDES ===== */
+/* ===== RENDER ===== */
 function renderSlides() {
-  stage.innerHTML = "";
+  cinema.innerHTML = "";
 
   images.forEach((src, i) => {
     const slide = document.createElement("div");
-    slide.className = "slide loading";
+    slide.className = "slide";
 
     const img = document.createElement("img");
     img.src = src;
 
-    img.onload = () => {
-      slide.classList.remove("loading");
-    };
-
     slide.appendChild(img);
-    stage.appendChild(slide);
+    cinema.appendChild(slide);
   });
 
   currentIndex = 0;
   activateSlide(0);
 }
 
-/* ===== ACTIVATE SLIDE ===== */
+/* ===== ACTIVATE ===== */
 function activateSlide(index) {
   const slides = document.querySelectorAll(".slide");
 
-  slides.forEach((slide, i) => {
-    slide.classList.remove("active", "back");
-
-    if (i === index) {
-      slide.classList.add("active");
-    } else if (i === index - 1) {
-      slide.classList.add("back");
-    }
+  slides.forEach((s, i) => {
+    s.classList.toggle("active", i === index);
   });
 }
 
-/* ===== LOOP SLIDES ===== */
+/* ===== LOOP ===== */
 function nextSlide() {
   if (images.length === 0) return;
 
-  currentIndex++;
-  if (currentIndex >= images.length) {
-    currentIndex = 0;
-  }
-
+  currentIndex = (currentIndex + 1) % images.length;
   activateSlide(currentIndex);
 }
 
-/* ===== TIMING ===== */
-setInterval(fetchImages, 2000);     // live update
-setInterval(nextSlide, 8000);       // stage duration
+/* ===== TIMERS ===== */
+setInterval(fetchImages, 2000);
+setInterval(nextSlide, 8000);
