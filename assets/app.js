@@ -1,3 +1,4 @@
+console.log("SnapShow JS loaded");
 const container = document.getElementById("image-container");
 
 if (!container) {
