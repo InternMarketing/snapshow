@@ -57,21 +57,22 @@ function updateStage() {
 
   if (total === 0) return;
 
-  slides.forEach((slide, i) => {
-    slide.classList.remove("active", "prev");
-
-    if (i === currentIndex) {
-      slide.classList.add("active");
-    }
-
-    /* only add prev if more than 1 image */
-    if (total > 1 && i === (currentIndex - 1 + total) % total) {
-      slide.classList.add("prev");
-    }
+  slides.forEach((slide) => {
+    slide.classList.remove("active", "prev", "prev2");
   });
+
+  slides[currentIndex].classList.add("active");
+
+  if (total > 1) {
+    slides[(currentIndex - 1 + total) % total].classList.add("prev");
+  }
+
+  if (total > 2) {
+    slides[(currentIndex - 2 + total) % total].classList.add("prev2");
+  }
 }
 
-/* ===== NEXT SLIDE ===== */
+/* ===== NEXT ===== */
 function nextSlide() {
   if (images.length === 0) return;
 
