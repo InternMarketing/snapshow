@@ -1,6 +1,20 @@
-const cinema = document.querySelector(".cinema");
+let cinema;
 let images = [];
 let currentIndex = 0;
+
+/* ===== INIT ===== */
+document.addEventListener("DOMContentLoaded", () => {
+  cinema = document.querySelector(".cinema");
+
+  if (!cinema) {
+    console.error("Cinema container not found");
+    return;
+  }
+
+  fetchImages();
+  setInterval(fetchImages, 2000);
+  setInterval(nextSlide, 8000);
+});
 
 /* ===== FETCH IMAGES ===== */
 async function fetchImages() {
@@ -17,11 +31,11 @@ async function fetchImages() {
   }
 }
 
-/* ===== RENDER ===== */
+/* ===== RENDER SLIDES ===== */
 function renderSlides() {
   cinema.innerHTML = "";
 
-  images.forEach((src, i) => {
+  images.forEach((src) => {
     const slide = document.createElement("div");
     slide.className = "slide";
 
@@ -36,23 +50,19 @@ function renderSlides() {
   activateSlide(0);
 }
 
-/* ===== ACTIVATE ===== */
+/* ===== ACTIVATE SLIDE ===== */
 function activateSlide(index) {
-  const slides = document.querySelectorAll(".slide");
+  const slides = cinema.querySelectorAll(".slide");
 
-  slides.forEach((s, i) => {
-    s.classList.toggle("active", i === index);
+  slides.forEach((slide, i) => {
+    slide.classList.toggle("active", i === index);
   });
 }
 
-/* ===== LOOP ===== */
+/* ===== NEXT SLIDE ===== */
 function nextSlide() {
   if (images.length === 0) return;
 
   currentIndex = (currentIndex + 1) % images.length;
   activateSlide(currentIndex);
 }
-
-/* ===== TIMERS ===== */
-setInterval(fetchImages, 2000);
-setInterval(nextSlide, 8000);
