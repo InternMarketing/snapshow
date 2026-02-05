@@ -1,0 +1,50 @@
+body {
+  margin: 0;
+  font-family: system-ui;
+  background: #000;
+  color: #fff;
+  text-align: center;
+}
+
+.upload-page {
+  padding: 40px;
+}
+
+button {
+  font-size: 1.1em;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+/* ===== QR OVERLAY ===== */
+
+#qrOverlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+}
+
+#qrOverlay.active {
+  display: flex;
+}
+
+.qr-box {
+  background: #000;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(255,255,255,0.2);
+}
+
+.qr-box canvas {
+  width: 300px;
+  height: 300px;
+}
+
+.qr-box p {
+  margin: 15px 0;
+}
