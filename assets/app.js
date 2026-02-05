@@ -1,44 +1,72 @@
-console.log("SnapShow JS loaded");
+const stage = document.querySelector(".stage");
+let images = [];
+let currentIndex = 0;
 
-document.addEventListener("DOMContentLoaded", () => {
-  const container = document.getElementById("image-container");
+/* ===== FETCH IMAGE LIST ===== */
+async function fetchImages() {
+  try {
+    const res = await fetch("feed.php");
+    const data = await res.json();
 
-  if (!container) {
-    console.error("SnapShow: image-container not found");
-    return;
-  }
-
-  let images = [];
-  let index = 0;
-
-  async function fetchImages() {
-    try {
-      const res = await fetch("/feed.php"); // ✅ absolute path
-      images = await res.json();
-    } catch (e) {
-      console.error("Failed to load images", e);
+    if (JSON.stringify(data) !== JSON.stringify(images)) {
+      images = data;
+      renderSlides();
     }
+  } catch (e) {
+    console.error("Feed error:", e);
   }
+}
 
-  function showNextImage() {
-    if (images.length === 0) return;
+/* ===== RENDER SLIDES ===== */
+function renderSlides() {
+  stage.innerHTML = "";
 
-    container.innerHTML = "";
+  images.forEach((src, i) => {
+    const slide = document.createElement("div");
+    slide.className = "slide loading";
 
     const img = document.createElement("img");
-    img.src = images[index];
-    img.className = "stage-image";
+    img.src = src;
 
-    container.appendChild(img);
+    img.onload = () => {
+      slide.classList.remove("loading");
+    };
 
-    index = (index + 1) % images.length;
+    slide.appendChild(img);
+    stage.appendChild(slide);
+  });
+
+  currentIndex = 0;
+  activateSlide(0);
+}
+
+/* ===== ACTIVATE SLIDE ===== */
+function activateSlide(index) {
+  const slides = document.querySelectorAll(".slide");
+
+  slides.forEach((slide, i) => {
+    slide.classList.remove("active", "back");
+
+    if (i === index) {
+      slide.classList.add("active");
+    } else if (i === index - 1) {
+      slide.classList.add("back");
+    }
+  });
+}
+
+/* ===== LOOP SLIDES ===== */
+function nextSlide() {
+  if (images.length === 0) return;
+
+  currentIndex++;
+  if (currentIndex >= images.length) {
+    currentIndex = 0;
   }
 
-  async function loop() {
-    await fetchImages();
-    showNextImage();
-    setTimeout(loop, 3200);
-  }
+  activateSlide(currentIndex);
+}
 
-  loop();
-});
+/* ===== TIMING ===== */
+setInterval(fetchImages, 2000);     // live update
+setInterval(nextSlide, 8000);       // stage duration
