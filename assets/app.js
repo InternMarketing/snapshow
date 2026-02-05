@@ -1,40 +1,44 @@
 console.log("SnapShow JS loaded");
-const container = document.getElementById("image-container");
 
-if (!container) {
-  console.error("SnapShow: image-container not found");
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("image-container");
 
-let images = [];
-let index = 0;
-
-async function fetchImages() {
-  try {
-    const res = await fetch("/feed.php");
-    images = await res.json();
-  } catch (e) {
-    console.error("Failed to load images", e);
+  if (!container) {
+    console.error("SnapShow: image-container not found");
+    return;
   }
-}
 
-function showNextImage() {
-  if (!container || images.length === 0) return;
+  let images = [];
+  let index = 0;
 
-  container.innerHTML = "";
+  async function fetchImages() {
+    try {
+      const res = await fetch("/feed.php"); // ✅ absolute path
+      images = await res.json();
+    } catch (e) {
+      console.error("Failed to load images", e);
+    }
+  }
 
-  const img = document.createElement("img");
-  img.src = images[index];
-  img.className = "stage-image";
+  function showNextImage() {
+    if (images.length === 0) return;
 
-  container.appendChild(img);
+    container.innerHTML = "";
 
-  index = (index + 1) % images.length;
-}
+    const img = document.createElement("img");
+    img.src = images[index];
+    img.className = "stage-image";
 
-async function loop() {
-  await fetchImages();
-  showNextImage();
-  setTimeout(loop, 3000);
-}
+    container.appendChild(img);
 
-loop();
+    index = (index + 1) % images.length;
+  }
+
+  async function loop() {
+    await fetchImages();
+    showNextImage();
+    setTimeout(loop, 3000);
+  }
+
+  loop();
+});
