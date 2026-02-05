@@ -1,15 +1,15 @@
 <?php
-header("Content-Type: application/json");
+header('Content-Type: application/json');
 
-$files = [];
-$dir = __DIR__ . "/uploads";
+$dir = __DIR__ . '/uploads';
+$images = [];
 
 if (is_dir($dir)) {
-  foreach (scandir($dir) as $f) {
-    if (preg_match('/\.(jpg|jpeg|png|gif)$/i', $f)) {
-      $files[] = "/snapshow/uploads/" . $f;
+    foreach (scandir($dir) as $file) {
+        if (preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $file)) {
+            $images[] = 'uploads/' . $file;
+        }
     }
-  }
 }
 
-echo json_encode($files);
+echo json_encode($images);
