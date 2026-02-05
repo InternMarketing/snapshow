@@ -1,27 +1,39 @@
 body {
   margin: 0;
-  font-family: system-ui;
   background: black;
-  color: white;
+  overflow: hidden;
+  font-family: system-ui;
 }
 
-/* FULL SCREEN CENTER STAGE */
-#slideshow {
+/* =======================
+   STAGE (THE THEATER)
+   ======================= */
+#stage {
+  position: relative;
   width: 100vw;
   height: 100vh;
+  background: black;
+  overflow: hidden;
+}
+
+/* =======================
+   SLIDESHOW SCREEN
+   ======================= */
+#slideshow {
+  position: absolute;
+  inset: 0; /* top right bottom left = 0 */
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  background: black;
-  overflow: hidden;
+  z-index: 5;
 }
 
-/* IMAGE BEHAVIOR */
+/* IMAGE FIT — CINEMA SAFE */
 #slideshow img {
-  max-width: 100vw;
-  max-height: 100vh;
+  max-width: 100%;
+  max-height: 100%;
 
   width: auto;
   height: auto;
@@ -30,7 +42,68 @@ body {
   display: block;
 }
 
-/* keep your other pages safe */
+/* =======================
+   SPOTLIGHT
+   ======================= */
+#spotlight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(255,255,255,0.15),
+    rgba(0,0,0,0.9) 70%
+  );
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* =======================
+   LIGHT BEAMS
+   ======================= */
+.light-beam {
+  position: absolute;
+  top: 0;
+  width: 20vw;
+  height: 100vh;
+  background: linear-gradient(
+    to center,
+    rgba(255,255,255,0.08),
+    transparent
+  );
+  z-index: 2;
+}
+
+.light-beam.left {
+  left: 0;
+}
+
+.light-beam.right {
+  right: 0;
+}
+
+/* =======================
+   CURTAINS (BLACK BARS)
+   ======================= */
+.curtain {
+  position: absolute;
+  top: 0;
+  width: 12vw;
+  height: 100vh;
+  background: black;
+  z-index: 6;
+}
+
+.curtain.left {
+  left: 0;
+}
+
+.curtain.right {
+  right: 0;
+}
+
+/* =======================
+   OTHER PAGES SAFE
+   ======================= */
 .gallery img,
 label img {
   width: 150px;
