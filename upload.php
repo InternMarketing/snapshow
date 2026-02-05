@@ -29,7 +29,7 @@
 <!-- QR OVERLAY -->
 <div id="qrOverlay">
   <div class="qr-box">
-    <canvas id="qrCanvas"></canvas>
+    <div id="qrCanvas"></div>
     <p>Scan to upload photos</p>
     <button id="closeQR">Close</button>
   </div>
