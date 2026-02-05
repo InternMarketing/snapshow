@@ -23,7 +23,7 @@ html, body {
   justify-content: center;
 }
 
-/* ===== CINEMA FRAME ===== */
+/* ===== CINEMA ===== */
 .cinema {
   position: relative;
   width: 100%;
@@ -44,23 +44,25 @@ html, body {
   justify-content: center;
 
   opacity: 0;
-  transform: scale(0.92);
+  transform: scale(0.94);
   transition:
     opacity 0.8s ease,
-    transform 1.2s ease;
+    transform 1s ease;
 
   z-index: 0;
 }
 
+/* ACTIVE = ALWAYS VISIBLE */
 .slide.active {
   opacity: 1;
   transform: scale(1);
   z-index: 3;
 }
 
+/* PREVIOUS (ONLY IF EXISTS) */
 .slide.prev {
-  opacity: 0.4;
-  transform: scale(0.96);
+  opacity: 0.35;
+  transform: scale(0.97);
   z-index: 2;
 }
 
