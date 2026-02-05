@@ -1,31 +1,39 @@
+/* ===== BASE ===== */
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  font-family: system-ui;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background: #000;
   color: #fff;
   text-align: center;
 }
 
 .upload-page {
-  padding: 40px;
+  padding: 40px 20px;
 }
 
 button {
-  font-size: 1.1em;
-  padding: 10px 20px;
+  font-size: 1.1rem;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
 }
 
 /* ===== QR OVERLAY ===== */
-
 #qrOverlay {
   position: fixed;
   inset: 0;
   display: none;
   align-items: center;
   justify-content: center;
-  background: rgba(0,0,0,0.75);
-  backdrop-filter: blur(10px);
+
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+
   z-index: 9999;
 }
 
@@ -33,18 +41,48 @@ button {
   display: flex;
 }
 
+/* ===== QR BOX ===== */
 .qr-box {
-  background: #000;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 40px rgba(255,255,255,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 32px;
+  border-radius: 16px;
+
+  background: radial-gradient(circle at top, #222, #000);
+  box-shadow:
+    0 0 40px rgba(255, 255, 255, 0.15),
+    inset 0 0 20px rgba(255, 255, 255, 0.05);
 }
 
-.qr-box canvas {
-  width: 300px;
-  height: 300px;
+/* QR container */
+#qrCanvas {
+  width: min(80vw, 360px);
+  height: min(80vw, 360px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* QR image injected by library */
+#qrCanvas img,
+#qrCanvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Text */
 .qr-box p {
-  margin: 15px 0;
+  margin: 18px 0 10px;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+/* Close button */
+#closeQR {
+  margin-top: 10px;
+  background: #fff;
+  color: #000;
 }
