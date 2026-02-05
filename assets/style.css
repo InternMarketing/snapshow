@@ -20,6 +20,7 @@ html, body {
   height: 100vh;
   background: radial-gradient(circle at center, #111 0%, #000 70%);
   overflow: hidden;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,37 +44,35 @@ html, body {
 .slide {
   position: absolute;
   inset: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
   opacity: 0;
-  transform: scale(1.04);
+  transform: scale(1.02); /* reduced so it doesn’t visually shrink */
   transition:
     opacity 1s ease,
     transform 6s ease;
 }
 
-/* Active (front stage) */
 .slide.active {
   opacity: 1;
   transform: scale(1);
   z-index: 3;
 }
 
-/* Back stage (depth illusion) */
 .slide.back {
-  opacity: 0.3;
-  transform: scale(0.98);
+  opacity: 0.25;
+  transform: scale(0.97);
   z-index: 2;
 }
 
-/* ===== IMAGE (IMPORTANT CHANGE HERE) ===== */
+/* ===== IMAGE (MAIN FIX) ===== */
 .slide img {
-  max-height: 80vh;      /* ~80% of screen height */
-  max-width: 90vw;       /* prevent ultra-wide overflow */
-  width: auto;
-  height: auto;
+  height: 80vh;          /* FORCE 80% screen height */
+  width: auto;           /* keep correct ratio */
+  max-width: 90vw;       /* never overflow horizontally */
 
   object-fit: contain;
   object-position: center;
@@ -82,17 +81,17 @@ html, body {
   box-shadow: 0 30px 80px rgba(0,0,0,0.6);
   background: #000;
 
-  /* Reflection (stage floor illusion) */
+  /* Reflection */
   -webkit-box-reflect: below 0
-    linear-gradient(transparent 60%, rgba(0,0,0,0.5));
+    linear-gradient(transparent 65%, rgba(0,0,0,0.45));
 }
 
-/* Slow cinematic motion */
+/* Subtle motion (now additive, not shrinking) */
 .slide.active img {
   animation: slowPan 10s linear forwards;
 }
 
-/* ===== LOADING SHIMMER ===== */
+/* ===== LOADING ===== */
 .slide.loading {
   background: linear-gradient(
     100deg,
@@ -107,10 +106,10 @@ html, body {
 /* ===== ANIMATIONS ===== */
 @keyframes slowPan {
   from {
-    transform: scale(1) translate(0, 0);
+    transform: scale(1);
   }
   to {
-    transform: scale(1.06) translate(-2%, -2%);
+    transform: scale(1.04);
   }
 }
 
