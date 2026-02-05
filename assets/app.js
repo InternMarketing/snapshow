@@ -53,13 +53,19 @@ function renderSlides() {
 /* ===== UPDATE STAGE ===== */
 function updateStage() {
   const slides = cinema.querySelectorAll(".slide");
+  const total = slides.length;
+
+  if (total === 0) return;
 
   slides.forEach((slide, i) => {
     slide.classList.remove("active", "prev");
 
     if (i === currentIndex) {
       slide.classList.add("active");
-    } else if (i === (currentIndex - 1 + slides.length) % slides.length) {
+    }
+
+    /* only add prev if more than 1 image */
+    if (total > 1 && i === (currentIndex - 1 + total) % total) {
       slide.classList.add("prev");
     }
   });
