@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function loop() {
     await fetchImages();
     showNextImage();
-    setTimeout(loop, 3000);
+    setTimeout(loop, 3200);
   }
 
   loop();
