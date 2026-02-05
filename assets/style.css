@@ -1,88 +1,116 @@
-html, body {
+/* ===== RESET ===== */
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
-  background: #dcecff;
-  overflow: hidden;
-  font-family: system-ui, sans-serif;
 }
 
-/* Wrapper – bright blue stage base */
-#stage-wrapper {
+html, body {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ===== STAGE ===== */
+.stage {
   position: relative;
   width: 100vw;
   height: 100vh;
-  background: radial-gradient(
-    circle at center,
-    #eaf4ff 0%,
-    #b9d9ff 45%,
-    #7fb4ff 75%,
-    #4a86d4 100%
-  );
+  background: radial-gradient(circle at center, #111 0%, #000 70%);
+  overflow: hidden;
 }
 
-/* Stage */
-#stage {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Strong bright spotlight */
-#spotlight {
+/* Vignette overlay */
+.stage::after {
+  content: "";
   position: absolute;
-  width: 85%;
-  height: 90%;
+  inset: 0;
+  pointer-events: none;
   background: radial-gradient(
     ellipse at center,
-    rgba(255,255,255,0.95) 0%,
-    rgba(200,230,255,0.85) 30%,
-    rgba(140,190,255,0.55) 55%,
-    rgba(140,190,255,0.25) 70%,
-    transparent 85%
+    rgba(0,0,0,0) 40%,
+    rgba(0,0,0,0.65) 100%
   );
-  filter: blur(45px);
-  z-index: 1;
-  pointer-events: none;
+  z-index: 5;
 }
 
-/* Image container */
-#image-container {
-  position: relative;
+/* ===== SLIDES ===== */
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  transform: scale(1.04);
+  transition:
+    opacity 1s ease,
+    transform 6s ease;
+}
+
+/* Active (front stage) */
+.slide.active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 3;
+}
+
+/* Back stage (depth illusion) */
+.slide.back {
+  opacity: 0.3;
+  transform: scale(0.98);
   z-index: 2;
 }
 
-/* Image */
-.stage-image {
-  max-width: 55vw;
-  max-height: 55vh;
+/* ===== IMAGE ===== */
+.slide img {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  animation: stageFade 3s ease-in-out forwards;
-  filter:
-    drop-shadow(0 15px 30px rgba(0,0,0,0.35))
-    drop-shadow(0 0 60px rgba(180,220,255,0.9));
+  object-position: center;
+
+  border-radius: 8px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+
+  background: #000;
+
+  /* Reflection (stage floor illusion) */
+  -webkit-box-reflect: below 0
+    linear-gradient(transparent 60%, rgba(0,0,0,0.5));
 }
 
-/* Fade animation */
-@keyframes stageFade {
-  0% {
-    opacity: 0;
-    transform: scale(0.94);
+/* Slow cinematic motion */
+.slide.active img {
+  animation: slowPan 10s linear forwards;
+}
+
+/* ===== LOADING SHIMMER ===== */
+.slide.loading {
+  background: linear-gradient(
+    100deg,
+    #111 40%,
+    #1c1c1c 50%,
+    #111 60%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes slowPan {
+  from {
+    transform: scale(1) translate(0, 0);
   }
-  15% {
-    opacity: 1;
-    transform: scale(1);
+  to {
+    transform: scale(1.06) translate(-2%, -2%);
   }
-  85% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.97);
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
   }
 }
