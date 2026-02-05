@@ -21,6 +21,8 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  perspective: 1200px;
 }
 
 /* ===== CINEMA ===== */
@@ -44,7 +46,7 @@ html, body {
   justify-content: center;
 
   opacity: 0;
-  transform: scale(0.94);
+  transform: scale(0.85) translateZ(-200px);
   transition:
     opacity 0.8s ease,
     transform 1s ease;
@@ -52,18 +54,25 @@ html, body {
   z-index: 0;
 }
 
-/* ACTIVE = ALWAYS VISIBLE */
+/* FRONT */
 .slide.active {
   opacity: 1;
-  transform: scale(1);
+  transform: scale(1) translateZ(0);
   z-index: 3;
 }
 
-/* PREVIOUS (ONLY IF EXISTS) */
+/* ONE STEP BACK */
 .slide.prev {
-  opacity: 0.35;
-  transform: scale(0.97);
+  opacity: 0.6;
+  transform: scale(0.92) translateZ(-120px);
   z-index: 2;
+}
+
+/* TWO STEPS BACK */
+.slide.prev2 {
+  opacity: 0.35;
+  transform: scale(0.88) translateZ(-240px);
+  z-index: 1;
 }
 
 /* ===== IMAGE ===== */
@@ -79,4 +88,6 @@ html, body {
 
   display: block;
   background: black;
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
 }
