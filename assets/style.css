@@ -49,14 +49,19 @@ body {
 #spotlight {
   position: absolute;
   inset: 0;
+
   background: radial-gradient(
     circle at center,
-    rgba(255,255,255,0.18),
-    rgba(0,0,0,0.95) 70%
+    rgba(255,255,255,0.35) 0%,
+    rgba(255,255,255,0.15) 30%,
+    rgba(0,0,0,0.9) 65%
   );
+
+  mix-blend-mode: screen;
   pointer-events: none;
-  z-index: 2;
+  z-index: 4;
 }
+
 
 /* =======================
    LIGHT BEAMS
