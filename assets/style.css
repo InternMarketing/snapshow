@@ -21,8 +21,6 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  perspective: 1200px;
 }
 
 /* ===== CINEMA ===== */
@@ -30,10 +28,6 @@ html, body {
   position: relative;
   width: 100%;
   height: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* ===== SLIDES ===== */
@@ -46,33 +40,26 @@ html, body {
   justify-content: center;
 
   opacity: 0;
-  transform: scale(0.85) translateZ(-200px);
   transition:
-    opacity 0.8s ease,
-    transform 1s ease;
+    opacity 0.6s ease,
+    transform 0.8s ease;
 
   z-index: 0;
 }
 
-/* FRONT */
+/* FRONT SLIDE */
 .slide.active {
   opacity: 1;
-  transform: scale(1) translateZ(0);
+  transform: scale(1) translateY(0);
   z-index: 3;
 }
 
-/* ONE STEP BACK */
+/* BACK SLIDE (CLEARLY VISIBLE) */
 .slide.prev {
-  opacity: 0.6;
-  transform: scale(0.92) translateZ(-120px);
+  opacity: 1;
+  transform: scale(0.88) translateY(6%);
   z-index: 2;
-}
-
-/* TWO STEPS BACK */
-.slide.prev2 {
-  opacity: 0.35;
-  transform: scale(0.88) translateZ(-240px);
-  z-index: 1;
+  filter: brightness(0.6);
 }
 
 /* ===== IMAGE ===== */
@@ -89,5 +76,5 @@ html, body {
   display: block;
   background: black;
 
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7);
 }
