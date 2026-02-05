@@ -3,21 +3,22 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
-  background: #050b14;
+  background: #dcecff;
   overflow: hidden;
   font-family: system-ui, sans-serif;
 }
 
-/* Wrapper */
+/* Wrapper – bright blue stage base */
 #stage-wrapper {
   position: relative;
   width: 100vw;
   height: 100vh;
   background: radial-gradient(
     circle at center,
-    #2a3f5f 0%,
-    #0a1424 70%,
-    #02060c 100%
+    #eaf4ff 0%,
+    #b9d9ff 45%,
+    #7fb4ff 75%,
+    #4a86d4 100%
   );
 }
 
@@ -31,19 +32,20 @@ html, body {
   align-items: center;
 }
 
-/* Spotlight (cool blue) */
+/* Strong bright spotlight */
 #spotlight {
   position: absolute;
-  width: 75%;
-  height: 85%;
+  width: 85%;
+  height: 90%;
   background: radial-gradient(
     ellipse at center,
-    rgba(120, 180, 255, 0.35) 0%,
-    rgba(120, 180, 255, 0.18) 35%,
-    rgba(120, 180, 255, 0.08) 55%,
-    transparent 75%
+    rgba(255,255,255,0.95) 0%,
+    rgba(200,230,255,0.85) 30%,
+    rgba(140,190,255,0.55) 55%,
+    rgba(140,190,255,0.25) 70%,
+    transparent 85%
   );
-  filter: blur(55px);
+  filter: blur(45px);
   z-index: 1;
   pointer-events: none;
 }
@@ -56,20 +58,20 @@ html, body {
 
 /* Image */
 .stage-image {
-  max-width: 50vw;
-  max-height: 50vh;
+  max-width: 55vw;
+  max-height: 55vh;
   object-fit: contain;
   animation: stageFade 3s ease-in-out forwards;
   filter:
-    drop-shadow(0 20px 40px rgba(0,0,0,0.6))
-    drop-shadow(0 0 30px rgba(120,180,255,0.35));
+    drop-shadow(0 15px 30px rgba(0,0,0,0.35))
+    drop-shadow(0 0 60px rgba(180,220,255,0.9));
 }
 
 /* Fade animation */
 @keyframes stageFade {
   0% {
     opacity: 0;
-    transform: scale(0.92);
+    transform: scale(0.94);
   }
   15% {
     opacity: 1;
@@ -81,6 +83,6 @@ html, body {
   }
   100% {
     opacity: 0;
-    transform: scale(0.96);
+    transform: scale(0.97);
   }
 }
