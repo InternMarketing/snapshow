@@ -1,49 +1,39 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const slideshow = document.getElementById('slideshow');
+const container = document.getElementById("image-container");
 
-    if (!slideshow) {
-        console.error('❌ #slideshow NOT FOUND');
-        return;
-    }
-
-    let images = [];
-    let index = 0;
-
-    async function fetchImages() {
-        try {
-            const res = await fetch('feed.php');
-            const data = await res.json();
-            if (Array.isArray(data)) images = data;
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    function showNextImage() {
-    if (!images.length) return;
-
-    slideshow.innerHTML = '';
-
-    const img = document.createElement('img');
-    img.src = images[index];
-    img.alt = 'SnapShow Image';
-
-    /* 🔒 FORCE SIZE: ~HALF SCREEN */
-    img.style.maxWidth = '60vw';
-    img.style.maxHeight = '75vh';
-    img.style.width = 'auto';
-    img.style.height = 'auto';
-    img.style.objectFit = 'contain';
-
-    slideshow.appendChild(img);
-
-    index = (index + 1) % images.length;
+if (!container) {
+  console.error("SnapShow: image-container not found");
 }
 
-    fetchImages().then(() => {
-        showNextImage();
-        setInterval(showNextImage, 3000);
-    });
+let images = [];
+let index = 0;
 
-    setInterval(fetchImages, 5000);
-});
+async function fetchImages() {
+  try {
+    const res = await fetch("feed.php");
+    images = await res.json();
+  } catch (e) {
+    console.error("Failed to load images", e);
+  }
+}
+
+function showNextImage() {
+  if (!container || images.length === 0) return;
+
+  container.innerHTML = "";
+
+  const img = document.createElement("img");
+  img.src = images[index];
+  img.className = "stage-image";
+
+  container.appendChild(img);
+
+  index = (index + 1) % images.length;
+}
+
+async function loop() {
+  await fetchImages();
+  showNextImage();
+  setTimeout(loop, 3000);
+}
+
+loop();
