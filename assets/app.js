@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const slideshow = document.getElementById('slideshow');
 
     if (!slideshow) {
-        console.error('❌ #slideshow NOT FOUND');
+        console.error('#slideshow not found');
         return;
     }
 
@@ -20,25 +20,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showNextImage() {
-    if (!images.length) return;
+        if (!images.length) return;
 
-    slideshow.innerHTML = '';
+        slideshow.innerHTML = '';
 
-    const img = document.createElement('img');
-    img.src = images[index];
-    img.alt = 'SnapShow Image';
+        const img = document.createElement('img');
+        img.src = images[index];
+        img.alt = 'SnapShow Image';
 
-    /* 🔒 FORCE SIZE: ~HALF SCREEN */
-    img.style.maxWidth = '60vw';
-    img.style.maxHeight = '75vh';
-    img.style.width = 'auto';
-    img.style.height = 'auto';
-    img.style.objectFit = 'contain';
+        slideshow.appendChild(img);
 
-    slideshow.appendChild(img);
-
-    index = (index + 1) % images.length;
-}
+        index = (index + 1) % images.length;
+    }
 
     fetchImages().then(() => {
         showNextImage();
