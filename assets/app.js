@@ -18,16 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function showNextImage() {
         if (!images.length) return;
 
-        // remove previous slide
-        const old = slideshow.querySelector('.slide');
-        if (old) {
-            old.classList.remove('show');
-            setTimeout(() => old.remove(), 1000);
-        }
+        // HARD RESET — ONE IMAGE ONLY
+        slideshow.innerHTML = '';
 
-        // create new slide
         const slide = document.createElement('div');
-        slide.className = 'slide';
+        slide.className = 'slide show';
 
         const img = document.createElement('img');
         img.src = images[index];
@@ -35,11 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         slide.appendChild(img);
         slideshow.appendChild(slide);
-
-        // trigger animation
-        requestAnimationFrame(() => {
-            slide.classList.add('show');
-        });
 
         index = (index + 1) % images.length;
     }
