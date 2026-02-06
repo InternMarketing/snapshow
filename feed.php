@@ -2,14 +2,15 @@
 header('Content-Type: application/json');
 
 $dir = __DIR__ . '/uploads';
-$images = [];
+$files = [];
 
 if (is_dir($dir)) {
-    foreach (scandir($dir) as $file) {
-        if (preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $file)) {
-            $images[] = 'uploads/' . $file;
+    foreach (scandir($dir) as $f) {
+        if (preg_match('/\.(jpg|jpeg|png|gif)$/i', $f)) {
+            $files[] = '/uploads/' . $f;
         }
     }
 }
 
-echo json_encode($images);
+sort($files);
+echo json_encode($files);
