@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchImages() {
         try {
-            const res = await fetch('feed.php');
+            const res = await fetch('/feed.php');
             const data = await res.json();
             if (Array.isArray(data)) images = data;
         } catch (e) {
