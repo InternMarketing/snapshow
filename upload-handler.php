@@ -1,37 +1,42 @@
 <?php
-session_start();
-if (!isset($_SESSION['event_name'])) {
-    header('Location: /event.php');
-    exit;
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+echo '<pre>';
+
+echo "FILES:\n";
+var_dump($_FILES);
+
+$dir = __DIR__ . '/uploads';
+echo "\nUpload dir: $dir\n";
+
+if (!is_dir($dir)) {
+    echo "Creating uploads dir...\n";
+    mkdir($dir, 0777, true);
 }
 
-$EVENT = $_SESSION['event_name'];
-$uploadDir = __DIR__ . '/uploads';
-
-if (!is_dir($uploadDir)) {
-    mkdir($uploadDir, 0777, true);
-}
-
-$counterFile = $uploadDir . '/.counter';
-$counter = file_exists($counterFile) ? (int)file_get_contents($counterFile) : 0;
-
-if (!isset($_FILES['images'])) {
-    header('Location: /upload.php');
-    exit;
+if (!is_writable($dir)) {
+    exit("Uploads directory NOT writable\n");
 }
 
 foreach ($_FILES['images']['tmp_name'] as $i => $tmp) {
-    if (!is_uploaded_file($tmp)) continue;
+    echo "\nProcessing file $i\n";
 
-    $counter++;
-    $ext = pathinfo($_FILES['images']['name'][$i], PATHINFO_EXTENSION);
-    $name = sprintf('%s_%04d.%s', $EVENT, $counter, $ext);
+    if (!is_uploaded_file($tmp)) {
+        echo "Not an uploaded file\n";
+        continue;
+    }
 
-    move_uploaded_file($tmp, $uploadDir . '/' . $name);
+    $name = time() . '_' . basename($_FILES['images']['name'][$i]);
+    $target = $dir . '/' . $name;
+
+    echo "Moving to $target\n";
+
+    if (move_uploaded_file($tmp, $target)) {
+        echo "SUCCESS\n";
+    } else {
+        echo "FAILED\n";
+    }
 }
 
-file_put_contents($counterFile, $counter);
-
-/* 🔁 redirect back instead of echo */
-header('Location: /upload.php?success=1');
-exit;
+echo "\nDone\n";
