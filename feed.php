@@ -1,13 +1,12 @@
 <?php
-header('Content-Type: application/json');
+header("Content-Type: application/json");
 
-$uploadDir = __DIR__ . '/uploads';
-$out = [];
+$UPLOAD_DIR = '/app/uploads';
+$images = [];
 
-if (is_dir($uploadDir)) {
-    foreach (glob($uploadDir . '/*.{jpg,jpeg,png,gif,webp}', GLOB_BRACE) as $f) {
-        $out[] = '/uploads/' . basename($f) . '?v=' . filemtime($f);
-    }
+foreach (glob($UPLOAD_DIR . '/*.{jpg,jpeg,png,webp,gif}', GLOB_BRACE) as $file) {
+    $images[] = '/uploads/' . basename($file);
 }
 
-echo json_encode($out);
+sort($images);
+echo json_encode($images);
