@@ -1,3 +1,7 @@
+<div class="nav-buttons">
+  <a href="upload.php">⬅ Upload More Photos</a>
+</div>
+
 <?php
 session_start();
 if (!isset($_SESSION['event_name'])) {
