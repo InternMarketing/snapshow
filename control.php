@@ -1,16 +1,26 @@
 <?php
 session_start();
+
 if (!isset($_SESSION['event_name'])) {
     header('Location: /event.php');
     exit;
 }
 
-$images = glob("uploads/*.{jpg,jpeg,png,webp}", GLOB_BRACE);
-sort($images);
 $EVENT = $_SESSION['event_name'];
+
+$uploadDir = __DIR__ . '/uploads';
+$images = [];
+
+if (is_dir($uploadDir)) {
+    foreach (glob($uploadDir . '/*.{jpg,jpeg,png,gif,webp}', GLOB_BRACE) as $f) {
+        $images[] = '/uploads/' . basename($f);
+    }
+}
+
+sort($images);
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>SnapShow Control</title>
@@ -35,7 +45,6 @@ body {
   font-weight: 600;
   text-align: center;
 }
-
 .status-banner small {
   display:block;
   font-weight:400;
@@ -65,7 +74,6 @@ button {
 </head>
 <body>
 
-<!-- STATUS BANNER -->
 <div class="status-banner">
   ⚠️ Temporary Storage Active
   <small>Download the ZIP regularly during the event to avoid data loss</small>
@@ -76,10 +84,10 @@ button {
 
 <form method="POST" action="/delete.php">
 <?php foreach ($images as $img): ?>
-<label>
-<input type="checkbox" name="files[]" value="<?= basename($img) ?>"><br>
-<img src="<?= htmlspecialchars($img) ?>">
-</label>
+  <label>
+    <input type="checkbox" name="files[]" value="<?= basename($img) ?>"><br>
+    <img src="<?= htmlspecialchars($img) ?>?v=<?= time() ?>">
+  </label>
 <?php endforeach; ?>
 
 <br><br>
@@ -89,7 +97,7 @@ button {
 <br><br>
 
 <a href="/download.php">
-<button>⬇ Download ALL as ZIP</button>
+  <button type="button">⬇ Download ALL as ZIP</button>
 </a>
 
 <script>
