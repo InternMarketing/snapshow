@@ -55,3 +55,11 @@ if (!isset($_SESSION['event_name'])) {
 
 </body>
 </html>
+
+<?php if (isset($_GET['success'])): ?>
+  <p style="️="color:green;">Upload successful!</p>
+<?php endif; ?>
+
+<div class="nav-buttons">
+  <a href="gallery.php">📂 View Gallery</a>
+</div>
