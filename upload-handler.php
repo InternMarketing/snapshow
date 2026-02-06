@@ -21,4 +21,6 @@ foreach ($_FILES['images']['tmp_name'] as $i => $tmp) {
     move_uploaded_file($tmp, $dir . '/' . $name);
 }
 
-echo 'OK';
+header('Location: upload.php?success=1');
+exit;
+
