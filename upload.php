@@ -1,10 +1,3 @@
-<?php
-session_start();
-if (!isset($_SESSION['event_name'])) {
-    header('Location: /event.php');
-    exit;
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +12,7 @@ if (!isset($_SESSION['event_name'])) {
   <h1>Upload Your Photos 📸</h1>
 
   <?php if (isset($_GET['success'])): ?>
-    <p style="color:#4ade80;">✅ Upload successful! You can upload more.</p>
+    <p style="color:#0f0;font-weight:bold;">✅ Upload successful! You can upload more.</p>
   <?php endif; ?>
 
   <form action="upload-handler.php" method="POST" enctype="multipart/form-data">
@@ -30,18 +23,16 @@ if (!isset($_SESSION['event_name'])) {
 
   <br>
 
-  <!-- NAV BUTTON -->
   <a href="gallery.php">
-    <button>🖼 View Gallery</button>
+    <button type="button">🖼 Go to Gallery</button>
   </a>
 
   <br><br>
 
-  <!-- QR BUTTON -->
   <button id="showQR">Show QR Code</button>
 </div>
 
-<!-- FULLSCREEN QR OVERLAY -->
+<!-- QR OVERLAY -->
 <div id="qrOverlay">
   <div class="qr-box">
     <div id="qrCanvas"></div>
@@ -55,11 +46,3 @@ if (!isset($_SESSION['event_name'])) {
 
 </body>
 </html>
-
-<?php if (isset($_GET['success'])): ?>
-  <p style="️="color:green;">Upload successful!</p>
-<?php endif; ?>
-
-<div class="nav-buttons">
-  <a href="gallery.php">📂 View Gallery</a>
-</div>
