@@ -1,4 +1,8 @@
 <?php
+echo 'GALLERY VERSION 2026-02-05'; 
+exit;
+
+<?php
 $uploadDir = __DIR__ . '/uploads';
 $images = [];
 
