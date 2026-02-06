@@ -1,5 +1,12 @@
 <?php
-$images = glob("uploads/*.{jpg,jpeg,png,gif,webp}", GLOB_BRACE);
+$uploadDir = __DIR__ . '/uploads';
+$images = [];
+
+if (is_dir($uploadDir)) {
+    foreach (glob($uploadDir . '/*.{jpg,jpeg,png,gif,webp}', GLOB_BRACE) as $file) {
+        $images[] = basename($file); // filename only
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +14,6 @@ $images = glob("uploads/*.{jpg,jpeg,png,gif,webp}", GLOB_BRACE);
     <meta charset="UTF-8">
     <title>SnapShow Gallery</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <style>
         body {
             margin: 0;
@@ -16,11 +22,7 @@ $images = glob("uploads/*.{jpg,jpeg,png,gif,webp}", GLOB_BRACE);
             color: #fff;
             text-align: center;
         }
-
-        h2 {
-            margin: 20px 0;
-        }
-
+        h2 { margin: 20px 0; }
         .gallery {
             display: flex;
             flex-wrap: wrap;
@@ -28,22 +30,10 @@ $images = glob("uploads/*.{jpg,jpeg,png,gif,webp}", GLOB_BRACE);
             gap: 10px;
             padding: 10px;
         }
-
-        .gallery label {
-            cursor: pointer;
-        }
-
         .gallery img {
             width: 150px;
-            height: auto;
             border-radius: 6px;
-            transition: transform 0.2s ease;
         }
-
-        .gallery img:hover {
-            transform: scale(1.05);
-        }
-
         button {
             margin: 20px;
             padding: 10px 20px;
@@ -62,7 +52,7 @@ $images = glob("uploads/*.{jpg,jpeg,png,gif,webp}", GLOB_BRACE);
             <label>
                 <input type="checkbox" name="files[]" value="<?= htmlspecialchars($img) ?>">
                 <br>
-                <img src="<?= htmlspecialchars($img) ?>" alt="">
+                <img src="/uploads/<?= htmlspecialchars($img) ?>" alt="">
             </label>
         <?php endforeach; ?>
     </div>
