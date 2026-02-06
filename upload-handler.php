@@ -1,17 +1,19 @@
 <?php
-echo 'HANDLER HIT';
-exit;
-<?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// uploads folder is at SITE ROOT
-$dir = realpath(__DIR__ . '/../uploads');
-if ($dir === false) {
-  $dir = __DIR__ . '/../uploads';
+/**
+ * uploads folder at project root:
+ * https://snapshow-swqb.onrender.com/uploads/
+ */
+$dir = __DIR__ . '/uploads';
+
+// create uploads folder if missing
+if (!is_dir($dir)) {
   mkdir($dir, 0777, true);
 }
 
+// no files?
 if (!isset($_FILES['images'])) {
   exit('No files received');
 }
@@ -19,12 +21,10 @@ if (!isset($_FILES['images'])) {
 foreach ($_FILES['images']['tmp_name'] as $i => $tmp) {
   if (!is_uploaded_file($tmp)) continue;
 
-  $name = time() . '_' . basename($_FILES['images']['name'][$i]);
-  $target = $dir . '/' . $name;
+  $safeName = preg_replace('/[^a-zA-Z0-9._-]/', '_', $_FILES['images']['name'][$i]);
+  $name = time() . '_' . $safeName;
 
-  if (!move_uploaded_file($tmp, $target)) {
-    exit('Failed to move uploaded file');
-  }
+  move_uploaded_file($tmp, $dir . '/' . $name);
 }
 
 echo 'OK';
