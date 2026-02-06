@@ -1,32 +1,32 @@
+<?php
 session_start();
 if (!isset($_SESSION['event_name'])) {
-  header('Location: /event.php');
-  exit;
+    exit('No event');
 }
+
 $EVENT = $_SESSION['event_name'];
-<?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+$uploadDir = __DIR__ . '/uploads';
 
-$dir = __DIR__ . '/uploads';
-
-if (!is_dir($dir)) {
-    mkdir($dir, 0777, true);
+if (!is_dir($uploadDir)) {
+    mkdir($uploadDir, 0777, true);
 }
 
-if (empty($_FILES['images'])) {
-    die('No files received');
+$counterFile = $uploadDir . '/.counter';
+$counter = file_exists($counterFile) ? (int)file_get_contents($counterFile) : 0;
+
+if (!isset($_FILES['images'])) {
+    exit('No files');
 }
 
 foreach ($_FILES['images']['tmp_name'] as $i => $tmp) {
     if (!is_uploaded_file($tmp)) continue;
 
-    $safe = preg_replace('/[^a-zA-Z0-9._-]/', '_', $_FILES['images']['name'][$i]);
-    $name = time() . '_' . $safe;
+    $counter++;
+    $ext = pathinfo($_FILES['images']['name'][$i], PATHINFO_EXTENSION);
+    $name = sprintf('%s_%04d.%s', $EVENT, $counter, $ext);
 
-    move_uploaded_file($tmp, $dir . '/' . $name);
+    move_uploaded_file($tmp, $uploadDir . '/' . $name);
 }
 
-header('Location: upload.php?success=1');
-exit;
-
+file_put_contents($counterFile, $counter);
+echo "OK";
