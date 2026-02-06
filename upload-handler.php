@@ -1,24 +1,31 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+session_start();
 
-$dir = __DIR__ . '/uploads';
+$UPLOAD_DIR = '/app/uploads';
+$PUBLIC_PATH = '/uploads';
 
-if (!is_dir($dir)) {
-    mkdir($dir, 0777, true);
+if (!is_dir($UPLOAD_DIR)) {
+    mkdir($UPLOAD_DIR, 0777, true);
 }
 
 if (!isset($_FILES['images'])) {
-    header('Location: upload.php?error=1');
+    echo "No files received";
     exit;
 }
 
-foreach ($_FILES['images']['tmp_name'] as $i => $tmp) {
-    if (!is_uploaded_file($tmp)) continue;
+$EVENT = $_SESSION['event_name'] ?? 'event';
 
-    $name = time() . '_' . basename($_FILES['images']['name'][$i]);
-    move_uploaded_file($tmp, $dir . '/' . $name);
+foreach ($_FILES['images']['tmp_name'] as $i => $tmp) {
+    if ($_FILES['images']['error'][$i] !== UPLOAD_ERR_OK) continue;
+
+    $ext = pathinfo($_FILES['images']['name'][$i], PATHINFO_EXTENSION);
+    $safeEvent = preg_replace('/[^a-zA-Z0-9_-]/', '_', $EVENT);
+
+    $newName = time() . '_' . $safeEvent . '_' . $i . '.' . $ext;
+    $dest = $UPLOAD_DIR . '/' . $newName;
+
+    move_uploaded_file($tmp, $dest);
 }
 
-header('Location: upload.php?success=1');
+header("Location: upload.php?success=1");
 exit;
