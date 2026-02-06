@@ -1,43 +1,63 @@
 <?php
-$UPLOAD_DIR = '/app/uploads';
-$images = [];
-
-foreach (glob($UPLOAD_DIR . '/*.{jpg,jpeg,png,webp,gif}', GLOB_BRACE) as $file) {
-    $images[] = '/uploads/' . basename($file);
-}
+$images = glob("uploads/*.{jpg,jpeg,png,webp}", GLOB_BRACE);
 sort($images);
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>SnapShow Gallery</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body { background:#111; color:#fff; font-family:system-ui; margin:0; padding:20px }
-img { width:160px; height:160px; object-fit:cover; margin:8px; border-radius:12px }
-a.button {
-  display:inline-block;
-  padding:10px 16px;
-  background:#2563eb;
+body {
+  margin:0;
+  background:#000;
   color:#fff;
+  font-family:system-ui;
+  text-align:center;
+}
+.gallery {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+  padding:20px;
+}
+label {
+  cursor:pointer;
+}
+img {
+  width:150px;
   border-radius:8px;
-  text-decoration:none;
+}
+button {
+  padding:12px 18px;
+  margin:12px;
+  font-size:16px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
 }
 </style>
 </head>
 <body>
 
-<h1>🖼 Gallery</h1>
+<h2>📸 Event Gallery</h2>
 
-<a href="upload.php" class="button">⬆ Upload More</a>
-<a href="download.php" class="button">⬇ Download ZIP</a>
-
-<div>
+<form method="POST" action="/download-selected.php">
+<div class="gallery">
 <?php foreach ($images as $img): ?>
-  <img src="<?= htmlspecialchars($img) ?>">
+  <label>
+    <input type="checkbox" name="files[]" value="<?= basename($img) ?>"><br>
+    <img src="<?= htmlspecialchars($img) ?>">
+  </label>
 <?php endforeach; ?>
 </div>
+
+<button type="submit">⬇ Download Selected</button>
+</form>
+
+<a href="/upload.php"><button>⬆ Upload More Photos</button></a>
 
 </body>
 </html>
