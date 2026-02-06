@@ -18,15 +18,23 @@ if (!is_dir($exportDir)) {
 $tarPath = "$exportDir/snapshow_$event.tar";
 $gzPath  = "$tarPath.gz";
 
-/* Remove old archives */
+/* Clean old archives */
 @unlink($tarPath);
 @unlink($gzPath);
+
+/* Collect files in stable order */
+$files = glob($uploadDir . '/*.{jpg,jpeg,png,gif,webp}', GLOB_BRACE);
+sort($files);
 
 try {
     $phar = new PharData($tarPath);
 
-    foreach (glob($uploadDir . '/*.{jpg,jpeg,png,gif,webp}', GLOB_BRACE) as $file) {
-        $phar->addFile($file, basename($file));
+    $i = 1;
+    foreach ($files as $file) {
+        $ext = pathinfo($file, PATHINFO_EXTENSION);
+        $newName = sprintf('%s_%04d.%s', $event, $i, $ext);
+        $phar->addFile($file, $newName);
+        $i++;
     }
 
     $phar->compress(Phar::GZ);
@@ -38,7 +46,7 @@ try {
     exit('Archive generation failed');
 }
 
-/* Force download */
+/* Download */
 header('Content-Type: application/gzip');
 header('Content-Disposition: attachment; filename="snapshow_' . $event . '.tar.gz"');
 header('Content-Length: ' . filesize($gzPath));
