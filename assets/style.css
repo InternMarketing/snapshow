@@ -71,6 +71,17 @@ body {
   z-index: 4;
 }
 
+#statusNote {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.6);
+  color: #facc15;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  z-index: 9999;
+}
 
 /* =======================
    LIGHT BEAMS
