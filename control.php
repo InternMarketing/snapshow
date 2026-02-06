@@ -16,13 +16,60 @@ $EVENT = $_SESSION['event_name'];
 <title>SnapShow Control</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body { background:#111;color:#fff;font-family:system-ui;padding:20px }
-img { width:160px;height:160px;object-fit:cover;margin:8px;border-radius:12px }
-label { display:inline-block;text-align:center }
-button { padding:10px 16px;font-size:16px;border-radius:8px;border:none;cursor:pointer }
+body {
+  background:#111;
+  color:#fff;
+  font-family:system-ui;
+  padding:20px;
+  margin:0;
+}
+
+/* STATUS BANNER */
+.status-banner {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(90deg, #b45309, #f59e0b);
+  color: #000;
+  padding: 12px 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.status-banner small {
+  display:block;
+  font-weight:400;
+}
+
+img {
+  width:160px;
+  height:160px;
+  object-fit:cover;
+  margin:8px;
+  border-radius:12px;
+}
+
+label {
+  display:inline-block;
+  text-align:center;
+}
+
+button {
+  padding:10px 16px;
+  font-size:16px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+}
 </style>
 </head>
 <body>
+
+<!-- STATUS BANNER -->
+<div class="status-banner">
+  ⚠️ Temporary Storage Active
+  <small>Download the ZIP regularly during the event to avoid data loss</small>
+</div>
 
 <h1>📂 SnapShow Control</h1>
 <p>Event: <strong><?= htmlspecialchars($EVENT) ?></strong></p>
@@ -48,7 +95,7 @@ button { padding:10px 16px;font-size:16px;border-radius:8px;border:none;cursor:p
 <script>
 setInterval(() => {
     fetch('/zip.php');
-}, 180000); // every 3 minutes
+}, 180000); // regenerate ZIP every 3 minutes
 </script>
 
 </body>
