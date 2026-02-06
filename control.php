@@ -76,7 +76,7 @@ button {
 
 <div class="status-banner">
   ⚠️ Temporary Storage Active
-  <small>Download the ZIP regularly during the event to avoid data loss</small>
+  <small>Download the archive regularly during the event</small>
 </div>
 
 <h1>📂 SnapShow Control</h1>
@@ -96,14 +96,15 @@ button {
 
 <br><br>
 
-<a href="/download.php">
-  <button type="button">⬇ Download ALL as ZIP</button>
+<a href="/zip.php">
+  <button type="button">⬇ Download ALL (.tar.gz)</button>
 </a>
 
 <script>
+/* Auto-regenerate archive every 3 minutes */
 setInterval(() => {
     fetch('/zip.php');
-}, 180000); // regenerate ZIP every 3 minutes
+}, 180000);
 </script>
 
 </body>
