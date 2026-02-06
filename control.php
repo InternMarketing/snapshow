@@ -1,3 +1,9 @@
+session_start();
+if (!isset($_SESSION['event_name'])) {
+  header('Location: /event.php');
+  exit;
+}
+$EVENT = $_SESSION['event_name'];
 <?php
 $images = glob("uploads/*.{jpg,jpeg,png,gif,webp}", GLOB_BRACE);
 sort($images);
