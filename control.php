@@ -1,64 +1,55 @@
+<?php
 session_start();
 if (!isset($_SESSION['event_name'])) {
-  header('Location: /event.php');
-  exit;
+    header('Location: /event.php');
+    exit;
 }
-$EVENT = $_SESSION['event_name'];
-<?php
-$images = glob("uploads/*.{jpg,jpeg,png,gif,webp}", GLOB_BRACE);
+
+$images = glob("uploads/*.{jpg,jpeg,png,webp}", GLOB_BRACE);
 sort($images);
+$EVENT = $_SESSION['event_name'];
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>SnapShow Admin</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      background:#111;
-      color:#fff;
-      font-family: system-ui, sans-serif;
-      padding:20px;
-    }
-    img {
-      width:160px;
-      height:160px;
-      object-fit:cover;
-      margin:8px;
-      border-radius:12px;
-      box-shadow:0 10px 20px rgba(0,0,0,.5);
-    }
-    label {
-      display:inline-block;
-      text-align:center;
-    }
-    button {
-      padding:10px 16px;
-      font-size:16px;
-      border-radius:8px;
-      border:none;
-      cursor:pointer;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>SnapShow Control</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body { background:#111;color:#fff;font-family:system-ui;padding:20px }
+img { width:160px;height:160px;object-fit:cover;margin:8px;border-radius:12px }
+label { display:inline-block;text-align:center }
+button { padding:10px 16px;font-size:16px;border-radius:8px;border:none;cursor:pointer }
+</style>
 </head>
 <body>
 
-<h1>📂 SnapShow Admin</h1>
-<p>Private link – keep it secret</p>
+<h1>📂 SnapShow Control</h1>
+<p>Event: <strong><?= htmlspecialchars($EVENT) ?></strong></p>
 
 <form method="POST" action="/delete.php">
 <?php foreach ($images as $img): ?>
-  <label>
-    <input type="checkbox" name="files[]" value="<?= basename($img) ?>">
-    <br>
-    <img src="<?= htmlspecialchars($img) ?>">
-  </label>
+<label>
+<input type="checkbox" name="files[]" value="<?= basename($img) ?>"><br>
+<img src="<?= htmlspecialchars($img) ?>">
+</label>
 <?php endforeach; ?>
 
 <br><br>
 <button type="submit">🗑 Delete Selected</button>
 </form>
+
+<br><br>
+
+<a href="/download.php">
+<button>⬇ Download ALL as ZIP</button>
+</a>
+
+<script>
+setInterval(() => {
+    fetch('/zip.php');
+}, 180000); // every 3 minutes
+</script>
 
 </body>
 </html>
