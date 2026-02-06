@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+    
+<div id="statusNote">⚠️ Photos are stored temporarily. Download backups during the event.</div>
 
 <div id="stage">
 
