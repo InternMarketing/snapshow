@@ -1,5 +1,12 @@
 <?php
-$images = glob("uploads/*.{jpg,jpeg,png,gif,webp}", GLOB_BRACE);
+$uploadDir = __DIR__ . '/uploads';
+$images = [];
+
+if (is_dir($uploadDir)) {
+    foreach (glob($uploadDir . '/*.{jpg,jpeg,png,gif,webp}', GLOB_BRACE) as $f) {
+        $images[] = '/uploads/' . basename($f);
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +22,6 @@ body {
   color: #fff;
   text-align: center;
 }
-h2 { margin: 20px 0; }
 .gallery {
   display: flex;
   flex-wrap: wrap;
@@ -30,8 +36,6 @@ h2 { margin: 20px 0; }
 button {
   margin: 15px;
   padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
 }
 </style>
 </head>
@@ -43,19 +47,11 @@ button {
   <button type="button">⬅ Upload More Photos</button>
 </a>
 
-<form method="POST" action="download.php">
-  <div class="gallery">
-    <?php foreach ($images as $img): ?>
-      <label>
-        <input type="checkbox" name="files[]" value="<?= htmlspecialchars($img) ?>">
-        <br>
-        <img src="<?= htmlspecialchars($img) ?>?v=<?= filemtime($img) ?>">
-      </label>
-    <?php endforeach; ?>
-  </div>
-
-  <button type="submit">⬇ Download Selected</button>
-</form>
+<div class="gallery">
+<?php foreach ($images as $img): ?>
+  <img src="<?= $img ?>?v=<?= time() ?>">
+<?php endforeach; ?>
+</div>
 
 </body>
 </html>
