@@ -1,3 +1,9 @@
+session_start();
+if (!isset($_SESSION['event_name'])) {
+  header('Location: /event.php');
+  exit;
+}
+$EVENT = $_SESSION['event_name'];
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
