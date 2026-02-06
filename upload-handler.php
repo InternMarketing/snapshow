@@ -1,7 +1,8 @@
 <?php
 session_start();
 if (!isset($_SESSION['event_name'])) {
-    exit('No event');
+    header('Location: /event.php');
+    exit;
 }
 
 $EVENT = $_SESSION['event_name'];
@@ -15,7 +16,8 @@ $counterFile = $uploadDir . '/.counter';
 $counter = file_exists($counterFile) ? (int)file_get_contents($counterFile) : 0;
 
 if (!isset($_FILES['images'])) {
-    exit('No files');
+    header('Location: /upload.php');
+    exit;
 }
 
 foreach ($_FILES['images']['tmp_name'] as $i => $tmp) {
@@ -29,4 +31,7 @@ foreach ($_FILES['images']['tmp_name'] as $i => $tmp) {
 }
 
 file_put_contents($counterFile, $counter);
-echo "OK";
+
+/* 🔁 redirect back instead of echo */
+header('Location: /upload.php?success=1');
+exit;
