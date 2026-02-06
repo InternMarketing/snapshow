@@ -8,4 +8,6 @@ https://snapshow-swqb.onrender.com/gallery.php for gallery
 
 https://snapshow-swqb.onrender.com/control/ for control panel
 
-Many functions still broken for now
+Caution! The images will not stay if Render sleep/shut down
+
+Be sure to download images as ZIP BEFORE leting Render to sleep/shut down
