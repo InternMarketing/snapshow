@@ -1,16 +1,13 @@
 <?php
 header('Content-Type: application/json');
 
-$dir = __DIR__ . '/uploads';
 $files = [];
+$dir = __DIR__ . '/uploads';
 
 if (is_dir($dir)) {
-    foreach (scandir($dir) as $f) {
-        if (preg_match('/\.(jpg|jpeg|png|gif)$/i', $f)) {
-            $files[] = '/uploads/' . $f;
-        }
+    foreach (glob($dir . '/*.{jpg,jpeg,png,gif,webp}', GLOB_BRACE) as $f) {
+        $files[] = '/uploads/' . basename($f) . '?v=' . filemtime($f);
     }
 }
 
-sort($files);
 echo json_encode($files);
