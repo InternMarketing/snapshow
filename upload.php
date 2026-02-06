@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['event_name'])) {
+    header('Location: /event.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
