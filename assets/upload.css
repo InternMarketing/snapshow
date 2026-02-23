@@ -1,88 +1,69 @@
-/* ===== BASE ===== */
-* {
-  box-sizing: border-box;
-}
-
 body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #000;
-  color: #fff;
-  text-align: center;
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #0e1624;
+    color: #ffffff;
 }
 
-.upload-page {
-  padding: 40px 20px;
+.upload-container {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    text-align: center;
 }
 
-button {
-  font-size: 1.1rem;
-  padding: 10px 22px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+h1 {
+    margin-bottom: 20px;
 }
 
-/* ===== QR OVERLAY ===== */
-#qrOverlay {
-  position: fixed;
-  inset: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(12px);
-
-  z-index: 9999;
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
-#qrOverlay.active {
-  display: flex;
+button,
+.gallery-btn {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
 }
 
-/* ===== QR BOX ===== */
-.qr-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  padding: 32px;
-  border-radius: 16px;
-
-  background: radial-gradient(circle at top, #222, #000);
-  box-shadow:
-    0 0 40px rgba(255, 255, 255, 0.15),
-    inset 0 0 20px rgba(255, 255, 255, 0.05);
+button:hover,
+.gallery-btn:hover {
+    background: #1d4ed8;
 }
 
-/* QR container */
-#qrCanvas {
-  width: min(80vw, 360px);
-  height: min(80vw, 360px);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* QR wrapper centers everything */
+#qrWrapper {
+    display: none;
+    margin: 20px 0;
+    justify-content: center;
 }
 
-/* QR image injected by library */
-#qrCanvas img,
-#qrCanvas canvas {
-  width: 100% !important;
-  height: 100% !important;
+#qrCode {
+    padding: 12px;
+    background: #ffffff;
+    border-radius: 8px;
 }
 
-/* Text */
-.qr-box p {
-  margin: 18px 0 10px;
-  font-size: 1rem;
-  opacity: 0.85;
+/* Upload form */
+form {
+    margin-top: 20px;
 }
 
-/* Close button */
-#closeQR {
-  margin-top: 10px;
-  background: #fff;
-  color: #000;
+input[type="file"] {
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+#status {
+    margin-top: 12px;
+    font-size: 14px;
 }
