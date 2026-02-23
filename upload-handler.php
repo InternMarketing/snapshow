@@ -1,31 +1,42 @@
 <?php
-session_start();
+header("Content-Type: application/json");
 
-$UPLOAD_DIR = '/app/uploads';
-$PUBLIC_PATH = '/uploads';
+$uploadDir = __DIR__ . "/uploads/";
 
-if (!is_dir($UPLOAD_DIR)) {
-    mkdir($UPLOAD_DIR, 0777, true);
+if (!is_dir($uploadDir)) {
+    mkdir($uploadDir, 0777, true);
 }
 
-if (!isset($_FILES['images'])) {
-    echo "No files received";
+if (!isset($_FILES['photos'])) {
+    echo json_encode(["success" => false, "error" => "No files received"]);
     exit;
 }
 
-$EVENT = $_SESSION['event_name'] ?? 'event';
+$uploaded = [];
 
-foreach ($_FILES['images']['tmp_name'] as $i => $tmp) {
-    if ($_FILES['images']['error'][$i] !== UPLOAD_ERR_OK) continue;
+foreach ($_FILES['photos']['tmp_name'] as $key => $tmp) {
 
-    $ext = pathinfo($_FILES['images']['name'][$i], PATHINFO_EXTENSION);
-    $safeEvent = preg_replace('/[^a-zA-Z0-9_-]/', '_', $EVENT);
+    if ($_FILES['photos']['error'][$key] !== UPLOAD_ERR_OK) {
+        continue;
+    }
 
-    $newName = time() . '_' . $safeEvent . '_' . $i . '.' . $ext;
-    $dest = $UPLOAD_DIR . '/' . $newName;
+    $original = basename($_FILES['photos']['name'][$key]);
+    $ext = strtolower(pathinfo($original, PATHINFO_EXTENSION));
 
-    move_uploaded_file($tmp, $dest);
+    if (!in_array($ext, ['jpg','jpeg','png','webp'])) {
+        continue;
+    }
+
+    // auto rename
+    $newName = time() . "_" . bin2hex(random_bytes(4)) . "." . $ext;
+    $dest = $uploadDir . $newName;
+
+    if (move_uploaded_file($tmp, $dest)) {
+        $uploaded[] = $newName;
+    }
 }
 
-header("Location: upload.php?success=1");
-exit;
+echo json_encode([
+    "success" => true,
+    "files" => $uploaded
+]);
