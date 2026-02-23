@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <title>SnapShow Gallery</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="assets/gallery.css">
 </head>
 <body>
 
 <h1>Gallery</h1>
 
+<!-- NAVIGATION / ACTIONS -->
 <div class="actions">
+    <a href="upload.php" class="back-btn">← Back to Upload</a>
     <button id="downloadSelected">Download Selected</button>
 </div>
 
@@ -33,6 +36,7 @@ function loadGallery() {
                     <input type="checkbox" value="${img}">
                     <img src="/uploads/${img}" alt="">
                 `;
+
                 gallery.appendChild(item);
             });
         });
@@ -43,7 +47,10 @@ downloadBtn.onclick = () => {
         gallery.querySelectorAll("input[type=checkbox]:checked")
     ).map(cb => cb.value);
 
-    if (!files.length) return alert("No files selected");
+    if (!files.length) {
+        alert("No files selected");
+        return;
+    }
 
     const form = document.createElement("form");
     form.method = "POST";
