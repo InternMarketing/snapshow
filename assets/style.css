@@ -1,172 +1,19 @@
 body {
-  margin: 0;
-  background: black;
-  overflow: hidden;
-  font-family: system-ui;
+    margin: 0;
+    background: radial-gradient(circle at top, #1e3a8a, #020617);
+    overflow: hidden;
 }
 
-/* =======================
-   STAGE (THE THEATER)
-   ======================= */
 #stage {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-
-  /* GUARANTEED VISIBLE STAGE EFFECT */
-  background:
-    radial-gradient(
-      ellipse at center,
-      #2a2a2a 0%,
-      #111 45%,
-      #000 70%
-    );
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-
-/* =======================
-   SLIDESHOW SCREEN
-   ======================= */
-#slideshow {
-  position: absolute;
-  inset: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  z-index: 3;
-}
-
-
-/* IMAGE FIT — CINEMA SAFE */
-#slideshow img {
-  max-width: 100%;
-  max-height: 100%;
-
-  width: auto;
-  height: auto;
-
-  object-fit: contain;
-  display: block;
-}
-
-/* =======================
-   SPOTLIGHT
-   ======================= */
-#spotlight {
-  position: absolute;
-  inset: 0;
-
-  background: radial-gradient(
-    circle at center,
-    rgba(255,255,255,0.35) 0%,
-    rgba(255,255,255,0.15) 30%,
-    rgba(0,0,0,0.9) 65%
-  );
-
-  mix-blend-mode: screen;
-  pointer-events: none;
-  z-index: 4;
-}
-
-#statusNote {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  background: rgba(0,0,0,0.6);
-  color: #facc15;
-  font-size: 12px;
-  padding: 6px 10px;
-  border-radius: 6px;
-  z-index: 9999;
-}
-
-/* =======================
-   LIGHT BEAMS
-   ======================= */
-.light-beam {
-  position: absolute;
-  top: 0;
-  width: 20vw;
-  height: 100vh;
-  background: linear-gradient(
-    to center,
-    rgba(255,255,255,0.08),
-    transparent
-  );
-  z-index: 2;
-}
-
-.light-beam.left {
-  left: 0;
-}
-
-.light-beam.right {
-  right: 0;
-}
-
-/* =======================
-   CURTAINS (BLACK BARS)
-   ======================= */
-.curtain {
-  position: absolute;
-  top: 0;
-  width: 12vw;
-  height: 100vh;
-  background: black;
-  z-index: 6;
-}
-
-.curtain.left {
-  left: 0;
-}
-
-.curtain.right {
-  right: 0;
-}
-
-/* =======================
-   OTHER PAGES SAFE
-   ======================= */
-.gallery img,
-label img {
-  width: 150px;
-  margin: 5px;
-}
-
-.upload-page input,
-.upload-page button {
-  font-size: 1.2em;
-  margin: 10px;
-}
-
-/* =======================
-   STAGE SLIDE EFFECT
-   ======================= */
-.slide {
-  position: absolute;
-  inset: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  opacity: 0;
-  transform: scale(0.9);
-  transition: opacity 1s ease, transform 1s ease;
-
-  z-index: 3;
-}
-
-.slide.show {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.slide img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+#stage img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
