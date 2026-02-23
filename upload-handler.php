@@ -1,39 +1,33 @@
 <?php
 header("Content-Type: application/json");
 
-// Directory to store uploads
+// Directory
 $uploadDir = __DIR__ . "/uploads/";
-if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
+if(!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
 
 // Check files
-if (empty($_FILES['photos'])) {
-    echo json_encode(["success" => false, "error" => "No files received"]);
+if(empty($_FILES['photos'])){
+    echo json_encode(["success"=>false,"error"=>"No files received"]);
     exit;
 }
 
 $uploaded = [];
 
-// Loop through all uploaded files
-foreach ($_FILES['photos']['tmp_name'] as $key => $tmp) {
-
-    if ($_FILES['photos']['error'][$key] !== UPLOAD_ERR_OK) continue;
+// Loop through files
+foreach($_FILES['photos']['tmp_name'] as $key=>$tmp){
+    if($_FILES['photos']['error'][$key]!==UPLOAD_ERR_OK) continue;
 
     $original = basename($_FILES['photos']['name'][$key]);
     $ext = strtolower(pathinfo($original, PATHINFO_EXTENSION));
+    if(!in_array($ext,['jpg','jpeg','png','webp'])) continue;
 
-    // Only allow certain image types
-    if (!in_array($ext, ['jpg','jpeg','png','webp'])) continue;
-
-    // Generate unique file name
+    // Auto rename
     $newName = time() . "_" . bin2hex(random_bytes(4)) . "." . $ext;
     $dest = $uploadDir . $newName;
 
-    if (move_uploaded_file($tmp, $dest)) {
+    if(move_uploaded_file($tmp,$dest)){
         $uploaded[] = $newName;
     }
 }
 
-echo json_encode([
-    "success" => true,
-    "files" => $uploaded
-]);
+echo json_encode(["success"=>true,"files"=>$uploaded]);
