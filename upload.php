@@ -38,20 +38,19 @@ button {
   margin:8px 4px;
 }
 
-.upload-btn {
-  background:#38bdf8;
-  color:#000;
-}
-
-.gallery-btn {
-  background:#22c55e;
-  color:#000;
-}
+.upload-btn { background:#38bdf8; color:#000; }
+.gallery-btn { background:#22c55e; color:#000; }
+.qr-btn { background:#facc15; color:#000; }
 
 #status {
   margin-top:15px;
   font-size:14px;
   word-break: break-word;
+}
+
+#qrcode {
+  margin: 15px auto;
+  display: none;
 }
 </style>
 </head>
@@ -59,6 +58,9 @@ button {
 
 <div class="container">
   <h2>📸 Upload Your Photos</h2>
+
+  <button class="qr-btn" id="showQrBtn">Show QR Code</button>
+  <div id="qrcode"></div>
 
   <form id="uploadForm" enctype="multipart/form-data">
     <input 
@@ -80,6 +82,24 @@ button {
     <button class="gallery-btn">View Gallery</button>
   </a>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script>
+// Show QR code when button is clicked
+const qrBtn = document.getElementById("showQrBtn");
+const qrContainer = document.getElementById("qrcode");
+
+qrBtn.addEventListener("click", () => {
+  if (qrContainer.style.display === "none") {
+    qrContainer.style.display = "block";
+    QRCode.toCanvas(qrContainer, window.location.href, function(error) {
+      if (error) console.error(error);
+    });
+  } else {
+    qrContainer.style.display = "none";
+  }
+});
+</script>
 
 <script>
 document.getElementById("uploadForm").addEventListener("submit", async function(e) {
