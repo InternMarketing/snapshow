@@ -1,6 +1,4 @@
 <?php
-$images = glob(__DIR__ . '/../uploads/*.{jpg,jpeg,png,webp}', GLOB_BRACE);
-sort($images);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +6,6 @@ sort($images);
     <meta charset="UTF-8">
     <title>SnapShow Control Panel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="control.css">
 </head>
 <body>
@@ -16,21 +13,12 @@ sort($images);
 <h1>SnapShow Control Panel</h1>
 
 <div class="top-actions">
-    <a href="../zip.php" class="zip-btn">
-        Download ALL Photos (ZIP)
-    </a>
+    <a href="../zip.php" class="zip-btn">Download ALL Photos (ZIP)</a>
+    <button id="deleteSelected">Delete Selected</button>
+    <button id="downloadSelected">Download Selected</button>
 </div>
 
-<div class="gallery">
-    <?php foreach ($images as $img): ?>
-        <div class="item">
-            <img src="<?php echo htmlspecialchars('../uploads/' . basename($img)); ?>" alt="">
-            <button class="delete-btn" data-file="<?php echo htmlspecialchars(basename($img)); ?>">
-                Delete
-            </button>
-        </div>
-    <?php endforeach; ?>
-</div>
+<div id="gallery" class="gallery"></div>
 
 <script src="control.js"></script>
 </body>
