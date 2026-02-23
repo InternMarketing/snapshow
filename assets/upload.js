@@ -1,67 +1,59 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const showQRBtn = document.getElementById("showQR");
-    const qrContainer = document.getElementById("qrCode");
-    const qrWrapper = document.getElementById("qrWrapper");
-    const uploadForm = document.getElementById("uploadForm");
-    const fileInput = document.getElementById("images");
-    const statusText = document.getElementById("status");
+    const form = document.getElementById("uploadForm");
+    const status = document.getElementById("status");
+    const qrBtn = document.getElementById("showQR");
+    const qrBox = document.getElementById("qrCode");
+    const qrWrap = document.getElementById("qrWrapper");
 
-    if (showQRBtn && qrContainer && qrWrapper) {
-        showQRBtn.addEventListener("click", () => {
-            qrContainer.innerHTML = "";
+    /* =========================
+       QR CODE
+    ========================= */
+    if (qrBtn && qrBox && qrWrap) {
+        qrBtn.addEventListener("click", () => {
+            qrBox.innerHTML = "";
 
             if (typeof QRCode === "undefined") {
-                qrContainer.innerHTML = "<p style='color:red'>QR library missing</p>";
-                qrWrapper.style.display = "flex";
+                qrBox.textContent = "QR library missing";
+                qrWrap.style.display = "flex";
                 return;
             }
 
-            const uploadUrl = "https://snapshow-swqb.onrender.com/upload.php";
-
-            new QRCode(qrContainer, {
-                text: uploadUrl,
+            new QRCode(qrBox, {
+                text: "https://snapshow-swqb.onrender.com/upload.php",
                 width: 220,
-                height: 220,
-                correctLevel: QRCode.CorrectLevel.H
+                height: 220
             });
 
-            qrWrapper.style.display = "flex";
+            qrWrap.style.display = "flex";
         });
     }
 
-    if (uploadForm && fileInput) {
-        uploadForm.addEventListener("submit", (e) => {
+    /* =========================
+       AJAX UPLOAD (SAFE)
+    ========================= */
+    if (form) {
+        form.addEventListener("submit", (e) => {
             e.preventDefault();
 
-            if (!fileInput.files.length) {
-                statusText.textContent = "Please select at least one image.";
-                return;
-            }
+            const data = new FormData(form);
+            status.textContent = "Uploading...";
 
-            const formData = new FormData();
-
-            for (let i = 0; i < fileInput.files.length; i++) {
-                formData.append("images[]", fileInput.files[i]);
-            }
-
-            statusText.textContent = "Uploading...";
-
-            fetch("upload-handler.php", {
+            fetch(form.action, {
                 method: "POST",
-                body: formData
+                body: data
             })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    statusText.textContent = "Thank you! Your images have been uploaded.";
-                    uploadForm.reset();
+            .then(r => r.json())
+            .then(res => {
+                if (res.success) {
+                    status.textContent = "Upload successful!";
+                    form.reset();
                 } else {
-                    statusText.textContent = data.error || "Upload failed.";
+                    status.textContent = res.error || "Upload failed";
                 }
             })
             .catch(() => {
-                statusText.textContent = "Upload error. Please try again.";
+                status.textContent = "Upload error";
             });
         });
     }
