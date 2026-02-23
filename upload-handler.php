@@ -13,7 +13,6 @@ if(empty($_FILES['photos'])){
 
 $uploaded = [];
 
-// Loop through files
 foreach($_FILES['photos']['tmp_name'] as $key=>$tmp){
     if($_FILES['photos']['error'][$key]!==UPLOAD_ERR_OK) continue;
 
@@ -21,7 +20,6 @@ foreach($_FILES['photos']['tmp_name'] as $key=>$tmp){
     $ext = strtolower(pathinfo($original, PATHINFO_EXTENSION));
     if(!in_array($ext,['jpg','jpeg','png','webp'])) continue;
 
-    // Auto rename
     $newName = time() . "_" . bin2hex(random_bytes(4)) . "." . $ext;
     $dest = $uploadDir . $newName;
 
