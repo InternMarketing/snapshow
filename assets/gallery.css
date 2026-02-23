@@ -1,0 +1,35 @@
+body {
+    font-family: system-ui, sans-serif;
+    background: #0e1624;
+    color: #ffffff;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 16px;
+}
+
+.actions {
+    margin-bottom: 16px;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+}
+
+.item {
+    background: #111827;
+    padding: 8px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.item img {
+    width: 100%;        /* ✅ CONSTRAIN SIZE */
+    height: 120px;      /* ✅ THUMBNAIL HEIGHT */
+    object-fit: cover;  /* ✅ NO DISTORTION */
+    border-radius: 4px;
+}
