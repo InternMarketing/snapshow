@@ -9,39 +9,32 @@ document.addEventListener("DOMContentLoaded", () => {
     // =========================
     // SHOW QR CODE
     // =========================
-    if (!showQRBtn) {
-        console.error("Show QR button (#showQR) not found");
-        return;
-    }
+    if (showQRBtn && qrContainer) {
+        showQRBtn.addEventListener("click", () => {
+            qrContainer.innerHTML = "";
 
-    if (!qrContainer) {
-        console.error("QR container (#qrCode) not found");
-        return;
-    }
+            if (typeof QRCode === "undefined") {
+                console.error("QRCode library not loaded");
+                qrContainer.innerHTML = "<p style='color:red'>QR library missing</p>";
+                qrContainer.style.display = "block";
+                return;
+            }
 
-    showQRBtn.addEventListener("click", () => {
-        qrContainer.innerHTML = "";
+            // HARD-CORRECT URL
+            const uploadUrl = "https://snapshow-swqb.onrender.com/upload.php";
 
-        if (typeof QRCode === "undefined") {
-            console.error("QRCode library is NOT loaded");
-            qrContainer.innerHTML = "<p style='color:red'>QR library missing</p>";
+            new QRCode(qrContainer, {
+                text: uploadUrl,
+                width: 220,
+                height: 220,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
             qrContainer.style.display = "block";
-            return;
-        }
-
-        const uploadUrl = window.location.origin + window.location.pathname;
-
-        new QRCode(qrContainer, {
-            text: uploadUrl,
-            width: 220,
-            height: 220,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
         });
-
-        qrContainer.style.display = "block";
-    });
+    }
 
     // =========================
     // HANDLE UPLOAD
