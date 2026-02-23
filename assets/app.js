@@ -1,43 +1,33 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const slideshow = document.getElementById('slideshow');
-    if (!slideshow) return;
+const stage = document.getElementById("stage");
+let currentIndex = 0;
+let images = [];
 
-    let images = [];
-    let index = 0;
+function loadImages() {
+    fetch("/feed.php")
+        .then(r => r.json())
+        .then(list => {
+            images = list;
+            if (images.length && !stage.querySelector("img")) {
+                showImage(0);
+            }
+        });
+}
 
-    async function fetchImages() {
-        try {
-            const res = await fetch('/feed.php');
-            const data = await res.json();
-            if (Array.isArray(data)) images = data;
-        } catch (e) {
-            console.error(e);
-        }
-    }
+function showImage(index) {
+    stage.innerHTML = "";
 
-    function showNextImage() {
-        if (!images.length) return;
+    const img = document.createElement("img");
+    img.src = "/uploads/" + images[index];   // ✅ ABSOLUTE PATH
+    img.alt = "";
 
-        // HARD RESET — ONE IMAGE ONLY
-        slideshow.innerHTML = '';
+    stage.appendChild(img);
+}
 
-        const slide = document.createElement('div');
-        slide.className = 'slide show';
+setInterval(() => {
+    if (!images.length) return;
+    currentIndex = (currentIndex + 1) % images.length;
+    showImage(currentIndex);
+}, 5000);
 
-        const img = document.createElement('img');
-        img.src = images[index];
-        img.alt = 'SnapShow Image';
-
-        slide.appendChild(img);
-        slideshow.appendChild(slide);
-
-        index = (index + 1) % images.length;
-    }
-
-    fetchImages().then(() => {
-        showNextImage();
-        setInterval(showNextImage, 3500);
-    });
-
-    setInterval(fetchImages, 5000);
-});
+loadImages();
+setInterval(loadImages, 3000);
