@@ -21,7 +21,7 @@ const gallery = document.getElementById("gallery");
 const downloadBtn = document.getElementById("downloadSelected");
 
 function loadGallery() {
-    fetch("feed.php")
+    fetch("/feed.php")
         .then(r => r.json())
         .then(images => {
             gallery.innerHTML = "";
@@ -31,7 +31,7 @@ function loadGallery() {
 
                 item.innerHTML = `
                     <input type="checkbox" value="${img}">
-                    <img src="uploads/${img}">
+                    <img src="/uploads/${img}" alt="">
                 `;
                 gallery.appendChild(item);
             });
@@ -47,7 +47,7 @@ downloadBtn.onclick = () => {
 
     const form = document.createElement("form");
     form.method = "POST";
-    form.action = "download-selected.php";
+    form.action = "/download-selected.php";
 
     files.forEach(f => {
         const input = document.createElement("input");
