@@ -51,6 +51,7 @@ button {
 #status {
   margin-top:15px;
   font-size:14px;
+  word-break: break-word;
 }
 </style>
 </head>
@@ -68,9 +69,7 @@ button {
       required
     >
     <br>
-    <button type="submit" class="upload-btn">
-      Upload
-    </button>
+    <button type="submit" class="upload-btn">Upload</button>
   </form>
 
   <div id="status"></div>
@@ -78,16 +77,13 @@ button {
   <br>
 
   <a href="/gallery.php">
-    <button class="gallery-btn">
-      View Gallery
-    </button>
+    <button class="gallery-btn">View Gallery</button>
   </a>
 </div>
 
 <script>
 document.getElementById("uploadForm").addEventListener("submit", async function(e) {
   e.preventDefault();
-
   const status = document.getElementById("status");
   status.textContent = "Uploading...";
 
@@ -98,18 +94,19 @@ document.getElementById("uploadForm").addEventListener("submit", async function(
       method: "POST",
       body: formData
     });
-
     const data = await res.json();
 
-    if (data.success) {
-      status.textContent = "✅ Upload successful!";
+    if (data.success && data.files.length) {
+      status.textContent = `✅ Upload successful! ${data.files.length} file(s) uploaded.`;
       this.reset();
+    } else if (!data.success) {
+      status.textContent = `❌ Upload failed: ${data.error || "Unknown error"}`;
     } else {
-      status.textContent = "❌ Upload failed.";
+      status.textContent = "❌ No valid files uploaded.";
     }
 
   } catch (err) {
-    status.textContent = "❌ Upload error.";
+    status.textContent = `❌ Upload error: ${err.message}`;
   }
 });
 </script>
