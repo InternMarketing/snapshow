@@ -6,15 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="assets/upload.css">
-
-    <style>
-        /* Safety: ensure QR is not hidden */
-        #qrCode {
-            margin-top: 20px;
-            display: none;
-            text-align: center;
-        }
-    </style>
 </head>
 <body>
 
@@ -22,13 +13,21 @@
 
         <h1>Upload Your Photos</h1>
 
-        <!-- SHOW QR BUTTON -->
-        <button id="showQR" type="button">
-            Show QR Code
-        </button>
+        <!-- ACTION BUTTONS -->
+        <div class="action-buttons">
+            <button id="showQR" type="button">
+                Show QR Code
+            </button>
 
-        <!-- QR CODE CONTAINER -->
-        <div id="qrCode"></div>
+            <a href="gallery.php" class="gallery-btn">
+                View Gallery
+            </a>
+        </div>
+
+        <!-- QR CODE -->
+        <div id="qrWrapper">
+            <div id="qrCode"></div>
+        </div>
 
         <!-- UPLOAD FORM -->
         <form id="uploadForm" enctype="multipart/form-data">
@@ -46,15 +45,12 @@
             </button>
         </form>
 
-        <!-- STATUS MESSAGE -->
         <p id="status"></p>
 
     </main>
 
-    <!-- IMPORTANT: QR LIBRARY MUST LOAD FIRST -->
+    <!-- Scripts -->
     <script src="assets/qrcode.min.js"></script>
-
-    <!-- THEN upload.js -->
     <script src="assets/upload.js"></script>
 
 </body>
