@@ -1,59 +1,76 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const form = document.getElementById("uploadForm");
-    const status = document.getElementById("status");
-    const qrBtn = document.getElementById("showQR");
-    const qrBox = document.getElementById("qrCode");
-    const qrWrap = document.getElementById("qrWrapper");
+    const showQRBtn = document.getElementById("showQR");
+    const qrWrapper = document.getElementById("qrWrapper");
+    const qrContainer = document.getElementById("qrCode");
+    const uploadForm = document.getElementById("uploadForm");
+    const statusText = document.getElementById("status");
+
+    let qrVisible = false;
 
     /* =========================
-       QR CODE
+       QR TOGGLE
     ========================= */
-    if (qrBtn && qrBox && qrWrap) {
-        qrBtn.addEventListener("click", () => {
-            qrBox.innerHTML = "";
+    if (showQRBtn && qrWrapper && qrContainer) {
+        showQRBtn.addEventListener("click", () => {
 
-            if (typeof QRCode === "undefined") {
-                qrBox.textContent = "QR library missing";
-                qrWrap.style.display = "flex";
+            // HIDE QR
+            if (qrVisible) {
+                qrWrapper.style.display = "none";
+                showQRBtn.textContent = "Show QR Code";
+                qrVisible = false;
                 return;
             }
 
-            new QRCode(qrBox, {
+            // SHOW QR
+            qrContainer.innerHTML = "";
+
+            if (typeof QRCode === "undefined") {
+                qrContainer.textContent = "QR library missing";
+                qrWrapper.style.display = "flex";
+                showQRBtn.textContent = "Hide QR Code";
+                qrVisible = true;
+                return;
+            }
+
+            new QRCode(qrContainer, {
                 text: "https://snapshow-swqb.onrender.com/upload.php",
                 width: 220,
-                height: 220
+                height: 220,
+                correctLevel: QRCode.CorrectLevel.H
             });
 
-            qrWrap.style.display = "flex";
+            qrWrapper.style.display = "flex";
+            showQRBtn.textContent = "Hide QR Code";
+            qrVisible = true;
         });
     }
 
     /* =========================
-       AJAX UPLOAD (SAFE)
+       UPLOAD (AJAX SAFE)
     ========================= */
-    if (form) {
-        form.addEventListener("submit", (e) => {
+    if (uploadForm) {
+        uploadForm.addEventListener("submit", (e) => {
             e.preventDefault();
 
-            const data = new FormData(form);
-            status.textContent = "Uploading...";
+            const formData = new FormData(uploadForm);
+            statusText.textContent = "Uploading...";
 
-            fetch(form.action, {
+            fetch(uploadForm.action, {
                 method: "POST",
-                body: data
+                body: formData
             })
             .then(r => r.json())
             .then(res => {
                 if (res.success) {
-                    status.textContent = "Upload successful!";
-                    form.reset();
+                    statusText.textContent = "Upload successful!";
+                    uploadForm.reset();
                 } else {
-                    status.textContent = res.error || "Upload failed";
+                    statusText.textContent = res.error || "Upload failed.";
                 }
             })
             .catch(() => {
-                status.textContent = "Upload error";
+                statusText.textContent = "Upload error. Please try again.";
             });
         });
     }
