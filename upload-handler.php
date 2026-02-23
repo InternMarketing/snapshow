@@ -1,31 +1,77 @@
 <?php
-header("Content-Type: application/json");
+header('Content-Type: application/json');
 
-// Directory
-$uploadDir = __DIR__ . "/uploads/";
-if(!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
+$uploadDir = __DIR__ . '/uploads/';
+if (!is_dir($uploadDir)) {
+    mkdir($uploadDir, 0777, true);
+}
 
-// Check files
-if(empty($_FILES['photos'])){
-    echo json_encode(["success"=>false,"error"=>"No files received"]);
+/* =========================
+   NORMALIZE FILE INPUT
+========================= */
+if (!isset($_FILES['images'])) {
+    echo json_encode([
+        'success' => false,
+        'error' => 'No files received'
+    ]);
     exit;
 }
 
-$uploaded = [];
+$files = $_FILES['images'];
+$fileCount = is_array($files['name']) ? count($files['name']) : 1;
 
-foreach($_FILES['photos']['tmp_name'] as $key=>$tmp){
-    if($_FILES['photos']['error'][$key]!==UPLOAD_ERR_OK) continue;
+/* =========================
+   EVENT NAME (OPTIONAL)
+========================= */
+$eventName = 'SnapShow';
+if (!empty($_POST['event_name'])) {
+    $eventName = preg_replace('/[^a-zA-Z0-9_-]/', '_', $_POST['event_name']);
+}
+$eventName = trim($eventName, '_');
 
-    $original = basename($_FILES['photos']['name'][$key]);
-    $ext = strtolower(pathinfo($original, PATHINFO_EXTENSION));
-    if(!in_array($ext,['jpg','jpeg','png','webp'])) continue;
+/* =========================
+   PROCESS FILES
+========================= */
+$saved = 0;
+$timestamp = time();
 
-    $newName = time() . "_" . bin2hex(random_bytes(4)) . "." . $ext;
-    $dest = $uploadDir . $newName;
+for ($i = 0; $i < $fileCount; $i++) {
 
-    if(move_uploaded_file($tmp,$dest)){
-        $uploaded[] = $newName;
+    $name     = is_array($files['name'])     ? $files['name'][$i]     : $files['name'];
+    $tmp      = is_array($files['tmp_name']) ? $files['tmp_name'][$i] : $files['tmp_name'];
+    $error    = is_array($files['error'])    ? $files['error'][$i]    : $files['error'];
+
+    if ($error !== UPLOAD_ERR_OK || !is_uploaded_file($tmp)) {
+        continue;
+    }
+
+    $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+    if (!in_array($ext, ['jpg','jpeg','png','webp'])) {
+        continue;
+    }
+
+    $newName = sprintf(
+        '%s_%s_%02d.%s',
+        $eventName,
+        $timestamp,
+        $saved + 1,
+        $ext
+    );
+
+    if (move_uploaded_file($tmp, $uploadDir . $newName)) {
+        $saved++;
     }
 }
 
-echo json_encode(["success"=>true,"files"=>$uploaded]);
+if ($saved === 0) {
+    echo json_encode([
+        'success' => false,
+        'error' => 'No valid images uploaded'
+    ]);
+    exit;
+}
+
+echo json_encode([
+    'success' => true,
+    'count' => $saved
+]);
