@@ -1,46 +1,36 @@
 <?php
-$uploadDir = __DIR__ . '/../uploads';
-$images = [];
-
-if (is_dir($uploadDir)) {
-  foreach (scandir($uploadDir) as $file) {
-    if (preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $file)) {
-      $images[] = $file;
-    }
-  }
-}
-
+$images = glob(__DIR__ . '/../uploads/*.{jpg,jpeg,png,webp}', GLOB_BRACE);
 sort($images);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>SnapShow Control Panel</title>
-  <link rel="stylesheet" href="control.css">
+    <meta charset="UTF-8">
+    <title>SnapShow Control Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="control.css">
 </head>
 <body>
 
-<h1>🎛️ SnapShow Control Panel</h1>
+<h1>SnapShow Control Panel</h1>
 
-<div class="actions">
-  <button onclick="selectAll()">Select All</button>
-  <button onclick="clearSelection()">Clear</button>
-  <button class="danger" onclick="deleteSelected()">Delete</button>
-  <button onclick="downloadSelected()">Download</button>
+<div class="top-actions">
+    <a href="../zip.php" class="zip-btn">
+        Download ALL Photos (ZIP)
+    </a>
 </div>
 
-<form id="imageForm">
-  <div class="grid">
+<div class="gallery">
     <?php foreach ($images as $img): ?>
-      <label class="thumb">
-        <input type="checkbox" value="<?= htmlspecialchars($img) ?>">
-        <img src="/uploads/<?= rawurlencode($img) ?>">
-        <span><?= htmlspecialchars($img) ?></span>
-      </label>
+        <div class="item">
+            <img src="<?php echo htmlspecialchars('../uploads/' . basename($img)); ?>" alt="">
+            <button class="delete-btn" data-file="<?php echo htmlspecialchars(basename($img)); ?>">
+                Delete
+            </button>
+        </div>
     <?php endforeach; ?>
-  </div>
-</form>
+</div>
 
 <script src="control.js"></script>
 </body>
