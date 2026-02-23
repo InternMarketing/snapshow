@@ -10,6 +10,7 @@
 </style>
 </head>
 <body>
+
 <div class="container">
   <h2>📸 Upload Your Photos</h2>
 
@@ -69,5 +70,6 @@ document.getElementById("uploadForm").addEventListener("submit", async function(
   }
 });
 </script>
+
 </body>
 </html>
