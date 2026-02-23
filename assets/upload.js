@@ -2,43 +2,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const showQRBtn = document.getElementById("showQR");
     const qrContainer = document.getElementById("qrCode");
+    const qrWrapper = document.getElementById("qrWrapper");
     const uploadForm = document.getElementById("uploadForm");
     const fileInput = document.getElementById("images");
     const statusText = document.getElementById("status");
 
-    // =========================
-    // SHOW QR CODE
-    // =========================
-    if (showQRBtn && qrContainer) {
+    if (showQRBtn && qrContainer && qrWrapper) {
         showQRBtn.addEventListener("click", () => {
             qrContainer.innerHTML = "";
 
             if (typeof QRCode === "undefined") {
-                console.error("QRCode library not loaded");
                 qrContainer.innerHTML = "<p style='color:red'>QR library missing</p>";
-                qrContainer.style.display = "block";
+                qrWrapper.style.display = "flex";
                 return;
             }
 
-            // HARD-CORRECT URL
             const uploadUrl = "https://snapshow-swqb.onrender.com/upload.php";
 
             new QRCode(qrContainer, {
                 text: uploadUrl,
                 width: 220,
                 height: 220,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H
             });
 
-            qrContainer.style.display = "block";
+            qrWrapper.style.display = "flex";
         });
     }
 
-    // =========================
-    // HANDLE UPLOAD
-    // =========================
     if (uploadForm && fileInput) {
         uploadForm.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -69,8 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     statusText.textContent = data.error || "Upload failed.";
                 }
             })
-            .catch(err => {
-                console.error(err);
+            .catch(() => {
                 statusText.textContent = "Upload error. Please try again.";
             });
         });
