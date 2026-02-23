@@ -1,47 +1,69 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const overlay = document.getElementById('qrOverlay');
-  const showBtn = document.getElementById('showQR');
-  const closeBtn = document.getElementById('closeQR');
-  const qrBox = document.getElementById('qrCanvas');
+document.addEventListener("DOMContentLoaded", () => {
+    const showQRBtn = document.getElementById("showQR");
+    const qrContainer = document.getElementById("qrContainer");
+    const uploadForm = document.getElementById("uploadForm");
+    const fileInput = document.getElementById("images");
+    const statusBox = document.getElementById("status");
 
-  if (!overlay || !showBtn || !closeBtn || !qrBox) {
-    console.error('❌ QR elements missing');
-    return;
-  }
+    // Generate QR code when button is clicked
+    if (showQRBtn) {
+        showQRBtn.addEventListener("click", () => {
+            qrContainer.innerHTML = "";
 
-  // Safety check: QRCode library loaded
-  if (typeof QRCode === 'undefined') {
-    console.error('❌ QRCode library not loaded');
-    return;
-  }
+            const uploadURL = window.location.href;
 
-  let qrInstance = null;
+            new QRCode(qrContainer, {
+                text: uploadURL,
+                width: 220,
+                height: 220,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
 
-  showBtn.addEventListener('click', () => {
-    overlay.classList.add('active');
-
-    // Generate QR only once
-    if (!qrInstance) {
-      qrBox.innerHTML = ''; // extra safety
-      qrInstance = new QRCode(qrBox, {
-        text: window.location.href,
-        width: 300,
-        height: 300,
-        colorDark: '#ffffff',
-        colorLight: '#000000',
-        correctLevel: QRCode.CorrectLevel.H
-      });
+            qrContainer.style.display = "block";
+        });
     }
-  });
 
-  closeBtn.addEventListener('click', () => {
-    overlay.classList.remove('active');
-  });
+    // Handle image upload
+    if (uploadForm) {
+        uploadForm.addEventListener("submit", (e) => {
+            e.preventDefault();
 
-  // Click outside QR to close
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) {
-      overlay.classList.remove('active');
+            if (!fileInput.files.length) {
+                statusBox.textContent = "Please select at least one image.";
+                statusBox.style.color = "red";
+                return;
+            }
+
+            const formData = new FormData();
+
+            for (let i = 0; i < fileInput.files.length; i++) {
+                formData.append("images[]", fileInput.files[i]);
+            }
+
+            statusBox.textContent = "Uploading...";
+            statusBox.style.color = "#555";
+
+            fetch("upload-handler.php", {
+                method: "POST",
+                body: formData
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        statusBox.textContent = "Upload successful! Thank you.";
+                        statusBox.style.color = "green";
+                        uploadForm.reset();
+                    } else {
+                        statusBox.textContent = data.error || "Upload failed.";
+                        statusBox.style.color = "red";
+                    }
+                })
+                .catch(() => {
+                    statusBox.textContent = "Network error. Please try again.";
+                    statusBox.style.color = "red";
+                });
+        });
     }
-  });
 });
