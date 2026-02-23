@@ -3,7 +3,7 @@ const deleteBtn = document.getElementById("deleteSelected");
 const downloadBtn = document.getElementById("downloadSelected");
 
 function loadImages() {
-    fetch("../feed.php")
+    fetch("/feed.php")
         .then(r => r.json())
         .then(images => {
             gallery.innerHTML = "";
@@ -14,8 +14,8 @@ function loadImages() {
 
                 item.innerHTML = `
                     <input type="checkbox" value="${img}">
-                    <img src="../uploads/${img}">
-                    <a class="single-download" href="../download.php?file=${encodeURIComponent(img)}">
+                    <img src="/uploads/${img}" alt="">
+                    <a class="single-download" href="/download.php?file=${encodeURIComponent(img)}">
                         Download
                     </a>
                 `;
@@ -37,7 +37,7 @@ deleteBtn.onclick = () => {
 
     if (!confirm("Delete selected images?")) return;
 
-    fetch("../delete.php", {
+    fetch("/delete.php", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify({ files })
@@ -52,7 +52,7 @@ downloadBtn.onclick = () => {
 
     const form = document.createElement("form");
     form.method = "POST";
-    form.action = "../download-selected.php";
+    form.action = "/download-selected.php";
 
     files.forEach(f => {
         const input = document.createElement("input");
