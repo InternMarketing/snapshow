@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($event !== '') {
         $_SESSION['event_name'] = $event;
-        header('Location: /control.php');
+        header('Location: /control/');
         exit;
     }
 }
