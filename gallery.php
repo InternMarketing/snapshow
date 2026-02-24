@@ -11,16 +11,15 @@ sort($images);
 <body>
 
 <h1>Gallery</h1>
-
 <a href="upload.php" class="back">Return to Upload</a>
 
 <form method="post" action="download-selected.php">
 <div class="grid">
 <?php foreach ($images as $img): ?>
-<label>
+<div class="cell">
     <input type="checkbox" name="files[]" value="<?= $img ?>">
     <img src="<?= $img ?>">
-</label>
+</div>
 <?php endforeach; ?>
 </div>
 
