@@ -5,8 +5,13 @@ async function poll() {
     const res = await fetch("feed.php");
     const data = await res.json();
 
-    if (JSON.stringify(data) !== JSON.stringify(images)) {
-        images = data;
+    // normalize feed.php output (object or string)
+    const normalized = data.map(item =>
+        typeof item === "string" ? item : item.file
+    );
+
+    if (JSON.stringify(normalized) !== JSON.stringify(images)) {
+        images = normalized;
         index = images.length - 1;
         updateImage();
     }
