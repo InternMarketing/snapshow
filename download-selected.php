@@ -1,5 +1,5 @@
 <?php
-$event = $_GET['event'] ?? 'event';
+$event = $_POST['event'] ?? $_GET['event'] ?? 'SnapShow';
 $all = isset($_GET['all']);
 
 $files = $all
@@ -9,13 +9,15 @@ $files = $all
 if (!$files) exit("No files");
 
 $tmp = sys_get_temp_dir() . "/snapshow_" . time() . ".zip";
-$zip = new PharData($tmp);
+$zip = new PharData($tmp, 0, null, Phar::ZIP);
 
 $i = 1;
 foreach ($files as $file) {
-    if (!file_exists($file)) continue;
-    $ext = pathinfo($file, PATHINFO_EXTENSION);
-    $zip->addFile($file, "{$event}_{$i}.{$ext}");
+    $path = $all ? $file : "uploads/" . basename($file);
+    if (!file_exists($path)) continue;
+
+    $ext = pathinfo($path, PATHINFO_EXTENSION);
+    $zip->addFile($path, "{$event}_{$i}.{$ext}");
     $i++;
 }
 
