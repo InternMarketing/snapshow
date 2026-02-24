@@ -15,7 +15,7 @@
 
     <div class="action-buttons">
         <button type="button" id="showQR">Show QR Code</button>
-        <a href="gallery.php" class="gallery-btn">View Gallery</a>
+        <a href="#" id="viewGallery">View Gallery</a>
     </div>
 
     <div id="qrWrapper">
