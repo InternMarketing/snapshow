@@ -31,3 +31,17 @@ setInterval(() => {
 
 loadImages();
 setInterval(loadImages, 3000);
+
+/* ========================= */
+/* QR TOGGLE LOGIC (ISOLATED) */
+/* ========================= */
+
+const qrBtn = document.getElementById("qrToggleBtn");
+const qrOverlay = document.getElementById("qrOverlay");
+
+if (qrBtn && qrOverlay) {
+    qrBtn.addEventListener("click", () => {
+        qrOverlay.style.display =
+            qrOverlay.style.display === "block" ? "none" : "block";
+    });
+}
