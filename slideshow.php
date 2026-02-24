@@ -1,5 +1,3 @@
-<?php
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,17 +8,16 @@
 <body>
 
 <div id="stage">
-    <img id="slideImage" src="" alt="">
+    <img id="slideImage" alt="">
 </div>
 
-<div id="controls">
-    <button id="toggleQR">Toggle QR</button>
-</div>
+<button id="toggleQR">QR</button>
 
 <div id="qrWrapper" class="hidden">
-    <img src="qr.png" alt="Upload QR">
+    <div id="qrcode"></div>
 </div>
 
+<script src="assets/qrcode.min.js"></script>
 <script src="assets/app.js"></script>
 </body>
 </html>
