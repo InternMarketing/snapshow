@@ -1,4 +1,6 @@
 <?php
+session_start();
+$event = $_SESSION['event_name'] ?? 'event';
 $images = glob("../uploads/*.{jpg,jpeg,png,webp}", GLOB_BRACE);
 sort($images);
 ?>
@@ -28,11 +30,14 @@ sort($images);
 
 <div id="modal">
     <span id="close">×</span>
-    <img id="modalImg">
     <span id="prev">‹</span>
+    <img id="modalImg">
     <span id="next">›</span>
 </div>
 
+<script>
+const EVENT_NAME = <?= json_encode($event) ?>;
+</script>
 <script src="../assets/app.js"></script>
 </body>
 </html>
