@@ -17,9 +17,7 @@ sort($images);
 </head>
 <body>
 
-<h1>Control Panel</h1>
-
-<form id="controlForm" method="post" action="../download-selected.php">
+<form method="post" action="../download-selected.php">
 <input type="hidden" name="event" value="<?= htmlspecialchars($event) ?>">
 
 <div class="grid">
@@ -31,14 +29,11 @@ sort($images);
 <?php endforeach; ?>
 </div>
 
-<div class="actions">
-    <button type="submit">Download Selected</button>
-    <button type="button" id="deleteSelected">Delete Selected</button>
-    <a href="../download-selected.php?all=1&event=<?= urlencode($event) ?>">Download ALL (ZIP)</a>
-</div>
+<button type="submit">Download Selected</button>
+<button type="button" id="deleteSelected">Delete Selected</button>
+<a href="../download-selected.php?all=1&event=<?= urlencode($event) ?>">Download ALL ZIP</a>
 </form>
 
-<!-- IMAGE MODAL (UNCHANGED) -->
 <div id="modal">
     <span id="close">×</span>
     <span id="prev">❮</span>
@@ -47,26 +42,20 @@ sort($images);
 </div>
 
 <script>
-const gallery = document.querySelector(".grid");
-const deleteBtn = document.getElementById("deleteSelected");
+const checked = () =>
+    [...document.querySelectorAll("input[name='files[]']:checked")]
+    .map(i => i.value);
 
-function selectedFiles() {
-    return [...gallery.querySelectorAll("input:checked")].map(cb => cb.value);
-}
-
-deleteBtn.onclick = () => {
-    const files = selectedFiles();
-    if (!files.length) return alert("No files selected");
-
+document.getElementById("deleteSelected").onclick = () => {
+    const files = checked();
+    if (!files.length) return alert("No selection");
     if (!confirm("Delete selected images?")) return;
 
     fetch("../delete.php", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(files)
-    })
-    .then(r => r.json())
-    .then(() => location.reload());
+    }).then(() => location.reload());
 };
 </script>
 
