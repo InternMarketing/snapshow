@@ -9,27 +9,17 @@ async function poll() {
 
     if (JSON.stringify(data) !== JSON.stringify(images)) {
         images = data;
-        index = images.length - 1;
-        show();
+        index = 0;
     }
 }
 
-function show() {
+function showNext() {
     if (!images.length) return;
     document.getElementById("slideImage").src = "uploads/" + images[index];
+    index = (index + 1) % images.length;
 }
 
 setInterval(poll, 3000);
+setInterval(showNext, 5000);
+
 poll();
-
-document.getElementById("toggleQR").onclick = () => {
-    document.getElementById("qrWrapper").classList.toggle("hidden");
-};
-
-window.addEventListener("load", () => {
-    new QRCode(document.getElementById("qrcode"), {
-        text: location.origin + "/upload.php",
-        width: 160,
-        height: 160
-    });
-});
