@@ -12,7 +12,15 @@ imgs.forEach(img => {
 });
 
 document.getElementById("close").onclick = () => modal.classList.remove("active");
-document.getElementById("prev").onclick = () => { idx=(idx-1+imgs.length)%imgs.length; modalImg.src=imgs[idx].src; };
-document.getElementById("next").onclick = () => { idx=(idx+imgs.length)%imgs.length; modalImg.src=imgs[idx].src; };
+document.getElementById("prev").onclick = () => {
+    idx = (idx - 1 + imgs.length) % imgs.length;
+    modalImg.src = imgs[idx].src;
+};
+document.getElementById("next").onclick = () => {
+    idx = (idx + 1) % imgs.length;
+    modalImg.src = imgs[idx].src;
+};
 
-modal.onclick = e => { if (e.target === modal) modal.classList.remove("active"); };
+modal.onclick = e => {
+    if (e.target === modal) modal.classList.remove("active");
+};
