@@ -16,9 +16,14 @@
 
 <script src="assets/qrcode.min.js"></script>
 <script>
-new QRCode(document.getElementById("qrcode"), location.origin + "/upload.php");
-document.getElementById("qrToggleBtn").onclick = () => {
-    qrOverlay.style.display = qrOverlay.style.display === "block" ? "none" : "block";
+new QRCode(
+    document.getElementById("qrcode"),
+    location.origin + "/upload.php"
+);
+
+qrToggleBtn.onclick = () => {
+    qrOverlay.style.display =
+        qrOverlay.style.display === "block" ? "none" : "block";
 };
 </script>
 
