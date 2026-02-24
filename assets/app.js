@@ -16,21 +16,19 @@ async function poll() {
 
 function show() {
     if (!images.length) return;
-    document.getElementById("slideImage").src = images[index];
+    document.getElementById("slideImage").src = "uploads/" + images[index];
 }
 
 setInterval(poll, 3000);
 poll();
 
-// QR toggle
 document.getElementById("toggleQR").onclick = () => {
     document.getElementById("qrWrapper").classList.toggle("hidden");
 };
 
-// QR generation (safe DOM timing)
 window.addEventListener("load", () => {
     new QRCode(document.getElementById("qrcode"), {
-        text: location.origin + location.pathname.replace("slideshow.php", "upload.php"),
+        text: location.origin + "/upload.php",
         width: 160,
         height: 160
     });
