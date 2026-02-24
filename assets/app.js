@@ -1,19 +1,20 @@
-let currentIndex = 0;
 let images = [];
-
-async function fetchImages() {
-    const res = await fetch("feed.php");
-    images = await res.json();
-}
-
-function showImage() {
-    if (!images.length) return;
-    document.getElementById("slideImage").src = images[currentIndex];
-}
+let index = 0;
 
 async function poll() {
-    await fetchImages();
-    showImage();
+    const res = await fetch("feed.php");
+    const data = await res.json();
+
+    if (JSON.stringify(data) !== JSON.stringify(images)) {
+        images = data;
+        index = images.length - 1;
+        updateImage();
+    }
+}
+
+function updateImage() {
+    if (!images.length) return;
+    document.getElementById("slideImage").src = images[index];
 }
 
 setInterval(poll, 3000);
@@ -22,3 +23,9 @@ poll();
 document.getElementById("toggleQR").onclick = () => {
     document.getElementById("qrWrapper").classList.toggle("hidden");
 };
+
+new QRCode(document.getElementById("qrcode"), {
+    text: location.origin + location.pathname.replace("slideshow.php", "upload.php"),
+    width: 160,
+    height: 160
+});
