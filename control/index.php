@@ -1,25 +1,38 @@
 <?php
+$images = glob("../uploads/*.{jpg,jpeg,png,webp}", GLOB_BRACE);
+sort($images);
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>SnapShow Control Panel</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="control.css">
+<meta charset="UTF-8">
+<title>Control Panel</title>
+<link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
 
-<h1>SnapShow Control Panel</h1>
+<h2>Control Panel</h2>
 
-<div class="top-actions">
-    <a href="../zip.php" class="zip-btn">Download ALL Photos (ZIP)</a>
-    <button id="deleteSelected">Delete Selected</button>
-    <button id="downloadSelected">Download Selected</button>
+<div id="controls">
+    <button id="deleteBtn">Delete Selected</button>
+    <button id="downloadBtn">Download Selected</button>
 </div>
 
-<div id="gallery" class="gallery"></div>
+<div id="gallery" class="grid">
+<?php foreach ($images as $img): ?>
+<div class="thumb" data-file="<?= basename($img) ?>">
+    <img src="../uploads/<?= basename($img) ?>">
+</div>
+<?php endforeach; ?>
+</div>
 
-<script src="control.js"></script>
+<div id="modal">
+    <span id="close">×</span>
+    <img id="modalImg">
+    <span id="prev">‹</span>
+    <span id="next">›</span>
+</div>
+
+<script src="../assets/app.js"></script>
 </body>
 </html>
