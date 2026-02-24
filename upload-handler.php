@@ -1,77 +1,42 @@
 <?php
-header('Content-Type: application/json');
+$maxSize = 5 * 1024 * 1024; // 5MB
+$allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
 
-$uploadDir = __DIR__ . '/uploads/';
-if (!is_dir($uploadDir)) {
-    mkdir($uploadDir, 0777, true);
-}
+$response = [
+    "success" => false,
+    "errors" => []
+];
 
-/* =========================
-   NORMALIZE FILE INPUT
-========================= */
-if (!isset($_FILES['images'])) {
-    echo json_encode([
-        'success' => false,
-        'error' => 'No files received'
-    ]);
+if (empty($_FILES['images'])) {
+    $response["errors"][] = "No valid images uploaded";
+    echo json_encode($response);
     exit;
 }
 
-$files = $_FILES['images'];
-$fileCount = is_array($files['name']) ? count($files['name']) : 1;
+foreach ($_FILES['images']['tmp_name'] as $i => $tmp) {
+    if (!is_uploaded_file($tmp)) continue;
 
-/* =========================
-   EVENT NAME (OPTIONAL)
-========================= */
-$eventName = 'SnapShow';
-if (!empty($_POST['event_name'])) {
-    $eventName = preg_replace('/[^a-zA-Z0-9_-]/', '_', $_POST['event_name']);
-}
-$eventName = trim($eventName, '_');
+    $size = $_FILES['images']['size'][$i];
+    $type = mime_content_type($tmp);
 
-/* =========================
-   PROCESS FILES
-========================= */
-$saved = 0;
-$timestamp = time();
-
-for ($i = 0; $i < $fileCount; $i++) {
-
-    $name     = is_array($files['name'])     ? $files['name'][$i]     : $files['name'];
-    $tmp      = is_array($files['tmp_name']) ? $files['tmp_name'][$i] : $files['tmp_name'];
-    $error    = is_array($files['error'])    ? $files['error'][$i]    : $files['error'];
-
-    if ($error !== UPLOAD_ERR_OK || !is_uploaded_file($tmp)) {
+    if ($size > $maxSize) {
+        $response["errors"][] = "Image too large (max 5MB)";
         continue;
     }
 
-    $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-    if (!in_array($ext, ['jpg','jpeg','png','webp'])) {
+    if (!in_array($type, $allowedTypes)) {
+        $response["errors"][] = "Invalid file type";
         continue;
     }
 
-    $newName = sprintf(
-        '%s_%s_%02d.%s',
-        $eventName,
-        $timestamp,
-        $saved + 1,
-        $ext
-    );
+    $ext = pathinfo($_FILES['images']['name'][$i], PATHINFO_EXTENSION);
+    $name = time() . "_" . bin2hex(random_bytes(4)) . "." . $ext;
 
-    if (move_uploaded_file($tmp, $uploadDir . $newName)) {
-        $saved++;
-    }
+    move_uploaded_file($tmp, "uploads/" . $name);
 }
 
-if ($saved === 0) {
-    echo json_encode([
-        'success' => false,
-        'error' => 'No valid images uploaded'
-    ]);
-    exit;
+if (empty($response["errors"])) {
+    $response["success"] = true;
 }
 
-echo json_encode([
-    'success' => true,
-    'count' => $saved
-]);
+echo json_encode($response);
