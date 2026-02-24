@@ -1,43 +1,70 @@
 <?php
-session_start();
-$event = $_SESSION['event_name'] ?? 'event';
 $images = glob("../uploads/*.{jpg,jpeg,png,webp}", GLOB_BRACE);
 sort($images);
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <title>Control Panel</title>
-<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="control.css">
 </head>
 <body>
 
-<h2>Control Panel</h2>
+<h1>Control Panel</h1>
 
-<div id="controls">
-    <button id="deleteBtn">Delete Selected</button>
-    <button id="downloadBtn">Download Selected</button>
-</div>
-
-<div id="gallery" class="grid">
-<?php foreach ($images as $img): ?>
-<div class="thumb" data-file="<?= basename($img) ?>">
-    <img src="../uploads/<?= basename($img) ?>">
+<div class="grid">
+<?php foreach ($images as $i => $img): ?>
+<div class="item">
+    <input type="checkbox" class="selector">
+    <img src="<?= $img ?>" data-index="<?= $i ?>">
 </div>
 <?php endforeach; ?>
 </div>
 
-<div id="modal">
+<div id="modal" class="hidden">
     <span id="close">×</span>
-    <span id="prev">‹</span>
+    <span id="prev">❮</span>
     <img id="modalImg">
-    <span id="next">›</span>
+    <span id="next">❯</span>
 </div>
 
 <script>
-const EVENT_NAME = <?= json_encode($event) ?>;
+const imgs = [...document.querySelectorAll(".item img")];
+let idx = 0;
+
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modalImg");
+
+imgs.forEach(img => {
+    img.onclick = () => {
+        idx = +img.dataset.index;
+        open();
+    };
+});
+
+function open() {
+    modal.classList.remove("hidden");
+    modalImg.src = imgs[idx].src;
+}
+
+function close() {
+    modal.classList.add("hidden");
+}
+
+document.getElementById("close").onclick = close;
+document.getElementById("prev").onclick = () => {
+    idx = (idx - 1 + imgs.length) % imgs.length;
+    open();
+};
+document.getElementById("next").onclick = () => {
+    idx = (idx + 1) % imgs.length;
+    open();
+};
+
+modal.onclick = e => {
+    if (e.target === modal) close();
+};
 </script>
-<script src="../assets/gallery.js"></script>
+
 </body>
 </html>
