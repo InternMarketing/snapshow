@@ -1,29 +1,33 @@
 <?php
-if (!isset($_POST['files']) || !is_array($_POST['files'])) {
+if (empty($_POST['files']) || !is_array($_POST['files'])) {
     exit('No files selected');
 }
 
-$zip = new ZipArchive();
-$zipName = 'snapshow_selected_' . date('Ymd_His') . '.zip';
-$zipPath = sys_get_temp_dir() . '/' . $zipName;
+$files = $_POST['files'];
+$zipName = 'snapshow_' . date('Ymd_His') . '.zip';
+$tmpPath = sys_get_temp_dir() . '/' . $zipName;
 
-if ($zip->open($zipPath, ZipArchive::CREATE) !== true) {
-    exit('Cannot create ZIP');
+// Remove old archive if exists
+if (file_exists($tmpPath)) {
+    unlink($tmpPath);
 }
 
-foreach ($_POST['files'] as $file) {
-    $file = basename($file);
-    $path = __DIR__ . '/uploads/' . $file;
-    if (is_file($path)) {
-        $zip->addFile($path, $file);
-    }
+// Create ZIP using PharData (ZipArchive-free)
+$zip = new PharData($tmpPath);
+
+foreach ($files as $file) {
+    // Security: only allow uploads directory
+    if (strpos($file, 'uploads/') !== 0) continue;
+    if (!file_exists($file)) continue;
+
+    $zip->addFile($file, basename($file));
 }
 
-$zip->close();
-
+// Force download
 header('Content-Type: application/zip');
 header('Content-Disposition: attachment; filename="' . $zipName . '"');
-header('Content-Length: ' . filesize($zipPath));
-readfile($zipPath);
-unlink($zipPath);
+header('Content-Length: ' . filesize($tmpPath));
+
+readfile($tmpPath);
+unlink($tmpPath);
 exit;
