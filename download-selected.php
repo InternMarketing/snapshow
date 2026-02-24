@@ -15,7 +15,6 @@ $i = 1;
 foreach ($files as $file) {
     $path = $all ? $file : "uploads/" . basename($file);
     if (!file_exists($path)) continue;
-
     $ext = pathinfo($path, PATHINFO_EXTENSION);
     $zip->addFile($path, "{$event}_{$i}.{$ext}");
     $i++;
