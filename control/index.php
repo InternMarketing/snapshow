@@ -38,6 +38,6 @@ sort($images);
 <script>
 const EVENT_NAME = <?= json_encode($event) ?>;
 </script>
-<script src="../assets/app.js"></script>
+<script src="../assets/gallery.js"></script>
 </body>
 </html>
