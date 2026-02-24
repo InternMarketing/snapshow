@@ -28,13 +28,19 @@ body {
     cursor: pointer;
 }
 
+/* MODAL — HIDDEN BY DEFAULT */
 #modal {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,.85);
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
+    z-index: 50;
+}
+
+#modal.active {
+    display: flex;
 }
 
 #modal img {
@@ -46,10 +52,9 @@ body {
     position: absolute;
     font-size: 40px;
     cursor: pointer;
+    color: white;
 }
 
 #close { top: 20px; right: 30px; }
 #prev { left: 30px; }
 #next { right: 30px; }
-
-.hidden { display: none; }
