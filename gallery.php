@@ -1,5 +1,6 @@
 <?php
-$event = $_GET['event'] ?? 'event';
+$event = $_GET['event'] ?? 'SnapShow';
+
 $images = array_merge(
     glob("uploads/*.jpg"),
     glob("uploads/*.jpeg"),
@@ -16,14 +17,15 @@ sort($images);
 </head>
 <body>
 
-<h1>Gallery</h1>
 <a href="upload.php">Return to Upload</a>
 
-<form method="post" action="download-selected.php?event=<?= urlencode($event) ?>">
+<form method="post" action="download-selected.php">
+<input type="hidden" name="event" value="<?= htmlspecialchars($event) ?>">
+
 <div class="grid">
 <?php foreach ($images as $i => $img): ?>
 <div class="cell">
-    <input type="checkbox" name="files[]" value="<?= htmlspecialchars($img) ?>">
+    <input type="checkbox" name="files[]" value="<?= basename($img) ?>">
     <img src="<?= htmlspecialchars($img) ?>" data-index="<?= $i ?>">
 </div>
 <?php endforeach; ?>
