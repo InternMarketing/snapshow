@@ -1,30 +1,24 @@
-const stage = document.getElementById("stage");
+let currentIndex = 0;
 let images = [];
-let index = 0;
 
-function loadImages() {
-    fetch("feed.php")
-        .then(r => r.json())
-        .then(list => {
-            images = list;
-            if (images.length && !stage.querySelector("img")) {
-                showImage(0);
-            }
-        });
+async function fetchImages() {
+    const res = await fetch("feed.php");
+    images = await res.json();
 }
 
-function showImage(i) {
-    stage.innerHTML = "";
-    const img = document.createElement("img");
-    img.src = "uploads/" + images[i];
-    stage.appendChild(img);
-}
-
-setInterval(() => {
+function showImage() {
     if (!images.length) return;
-    index = (index + 1) % images.length;
-    showImage(index);
-}, 5000);
+    document.getElementById("slideImage").src = images[currentIndex];
+}
 
-loadImages();
-setInterval(loadImages, 3000);
+async function poll() {
+    await fetchImages();
+    showImage();
+}
+
+setInterval(poll, 3000);
+poll();
+
+document.getElementById("toggleQR").onclick = () => {
+    document.getElementById("qrWrapper").classList.toggle("hidden");
+};
