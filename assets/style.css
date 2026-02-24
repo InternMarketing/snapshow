@@ -17,3 +17,44 @@ body {
     max-height: 100%;
     object-fit: contain;
 }
+
+/* ========================= */
+/* QR TOGGLE (NON-INTRUSIVE) */
+/* ========================= */
+
+#qrToggleBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: rgba(30, 167, 255, 0.85);
+    color: #000;
+    font-weight: bold;
+    padding: 10px 14px;
+    border-radius: 50px;
+    cursor: pointer;
+    user-select: none;
+}
+
+#qrOverlay {
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+    z-index: 999;
+    background: rgba(10, 20, 35, 0.95);
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    display: none;
+}
+
+#qrOverlay img {
+    width: 180px;
+    height: 180px;
+}
+
+.qr-label {
+    margin-top: 8px;
+    color: #8fd3ff;
+    font-size: 14px;
+}
