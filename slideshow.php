@@ -10,6 +10,18 @@
 
 <div id="stage"></div>
 
+<!-- QR Toggle Button -->
+<div id="qrToggleBtn">QR</div>
+
+<!-- QR Overlay -->
+<div id="qrOverlay">
+    <img
+        src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=/upload.php"
+        alt="Upload QR Code"
+    >
+    <div class="qr-label">Upload Photos</div>
+</div>
+
 <script src="assets/app.js"></script>
 </body>
 </html>
