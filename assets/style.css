@@ -9,15 +9,14 @@ body {
     position: fixed;
     inset: 0;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }
 
 #stage::before {
     content: "";
     position: absolute;
-    width: 120%;
-    height: 120%;
+    inset: -20%;
     background: radial-gradient(circle, rgba(56,189,248,.35), transparent 60%);
 }
 
@@ -30,20 +29,17 @@ body {
     z-index: 1;
 }
 
-#controls {
+#toggleQR {
     position: fixed;
     top: 20px;
     right: 20px;
-    z-index: 5;
-}
-
-#controls button {
-    padding: 10px 16px;
     background: #0ea5e9;
     border: none;
     color: #fff;
-    cursor: pointer;
+    padding: 10px 14px;
     border-radius: 6px;
+    cursor: pointer;
+    z-index: 5;
 }
 
 #qrWrapper {
