@@ -15,7 +15,7 @@ sort($images);
 <div class="grid">
 <?php foreach ($images as $i => $img): ?>
 <div class="item">
-    <input type="checkbox" class="selector">
+    <input type="checkbox" name="select[]">
     <img src="<?= $img ?>" data-index="<?= $i ?>">
 </div>
 <?php endforeach; ?>
@@ -31,39 +31,26 @@ sort($images);
 <script>
 const imgs = [...document.querySelectorAll(".item img")];
 let idx = 0;
-
 const modal = document.getElementById("modal");
 const modalImg = document.getElementById("modalImg");
 
 imgs.forEach(img => {
     img.onclick = () => {
         idx = +img.dataset.index;
-        open();
+        show();
     };
 });
 
-function open() {
+function show() {
     modal.classList.remove("hidden");
     modalImg.src = imgs[idx].src;
 }
 
-function close() {
-    modal.classList.add("hidden");
-}
+document.getElementById("close").onclick = () => modal.classList.add("hidden");
+document.getElementById("prev").onclick = () => { idx = (idx - 1 + imgs.length) % imgs.length; show(); };
+document.getElementById("next").onclick = () => { idx = (idx + 1) % imgs.length; show(); };
 
-document.getElementById("close").onclick = close;
-document.getElementById("prev").onclick = () => {
-    idx = (idx - 1 + imgs.length) % imgs.length;
-    open();
-};
-document.getElementById("next").onclick = () => {
-    idx = (idx + 1) % imgs.length;
-    open();
-};
-
-modal.onclick = e => {
-    if (e.target === modal) close();
-};
+modal.onclick = e => { if (e.target === modal) modal.classList.add("hidden"); };
 </script>
 
 </body>
