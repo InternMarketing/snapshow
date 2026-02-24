@@ -1,53 +1,30 @@
+<?php
+// upload.php
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>SnapShow Upload</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="assets/upload.css">
+<meta charset="UTF-8">
+<title>Upload</title>
 </head>
 <body>
 
-<main class="upload-container">
+<form action="upload-handler.php" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="event_name" value="SnapShow">
+    <input type="file" name="images[]" multiple required>
+    <button type="submit">Upload</button>
+</form>
 
-    <h1>Upload Your Photos</h1>
+<a href="#" id="viewGallery">Go to Gallery</a>
 
-    <div class="action-buttons">
-        <button type="button" id="showQR">Show QR Code</button>
-        <a href="#" id="viewGallery">View Gallery</a>
-    </div>
-
-    <div id="qrWrapper">
-        <div id="qrCode"></div>
-    </div>
-
-    <form
-        id="uploadForm"
-        method="POST"
-        action="upload-handler.php"
-        enctype="multipart/form-data"
-    >
-        <input type="hidden" name="event_name" value="SnapShow">
-
-        <input
-            type="file"
-            id="images"
-            name="images[]"
-            accept="image/*"
-            multiple
-            required
-        >
-
-        <button type="submit">Upload Images</button>
-    </form>
-
-    <p id="status"></p>
-
-</main>
-
-<script src="assets/qrcode.min.js"></script>
-<script src="assets/upload.js"></script>
+<script>
+document.getElementById("viewGallery").addEventListener("click", function (e) {
+    e.preventDefault();
+    const eventInput = document.querySelector('input[name="event_name"]');
+    const eventName = eventInput && eventInput.value ? eventInput.value : "SnapShow";
+    window.location.href = "gallery.php?event=" + encodeURIComponent(eventName);
+});
+</script>
 
 </body>
 </html>
