@@ -1,5 +1,5 @@
 <?php
-$event = $_GET['event'] ?? 'event';
+$event = $_GET['event'] ?? 'SnapShow';
 
 $images = array_merge(
     glob("../uploads/*.jpg"),
@@ -19,11 +19,13 @@ sort($images);
 
 <h1>Control Panel</h1>
 
-<form method="post" action="../download-selected.php?event=<?= urlencode($event) ?>">
+<form id="controlForm" method="post" action="../download-selected.php">
+<input type="hidden" name="event" value="<?= htmlspecialchars($event) ?>">
+
 <div class="grid">
 <?php foreach ($images as $i => $img): ?>
 <div class="item">
-    <input type="checkbox" name="files[]" value="<?= htmlspecialchars($img) ?>">
+    <input type="checkbox" name="files[]" value="<?= basename($img) ?>">
     <img src="<?= htmlspecialchars($img) ?>" data-index="<?= $i ?>">
 </div>
 <?php endforeach; ?>
@@ -31,11 +33,12 @@ sort($images);
 
 <div class="actions">
     <button type="submit">Download Selected</button>
+    <button type="button" id="deleteSelected">Delete Selected</button>
     <a href="../download-selected.php?all=1&event=<?= urlencode($event) ?>">Download ALL (ZIP)</a>
 </div>
 </form>
 
-<!-- MODAL (KEEP) -->
+<!-- IMAGE MODAL (UNCHANGED) -->
 <div id="modal">
     <span id="close">×</span>
     <span id="prev">❮</span>
@@ -44,25 +47,29 @@ sort($images);
 </div>
 
 <script>
-const imgs = [...document.querySelectorAll(".item img")];
-let idx = 0;
-const modal = document.getElementById("modal");
-const modalImg = document.getElementById("modalImg");
+const gallery = document.querySelector(".grid");
+const deleteBtn = document.getElementById("deleteSelected");
 
-imgs.forEach(img => {
-    img.onclick = () => {
-        idx = +img.dataset.index;
-        modal.classList.add("active");
-        modalImg.src = imgs[idx].src;
-    };
-});
+function selectedFiles() {
+    return [...gallery.querySelectorAll("input:checked")].map(cb => cb.value);
+}
 
-document.getElementById("close").onclick = () => modal.classList.remove("active");
-document.getElementById("prev").onclick = () => { idx=(idx-1+imgs.length)%imgs.length; modalImg.src=imgs[idx].src; };
-document.getElementById("next").onclick = () => { idx=(idx+1)%imgs.length; modalImg.src=imgs[idx].src; };
+deleteBtn.onclick = () => {
+    const files = selectedFiles();
+    if (!files.length) return alert("No files selected");
 
-modal.onclick = e => { if (e.target === modal) modal.classList.remove("active"); };
+    if (!confirm("Delete selected images?")) return;
+
+    fetch("../delete.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(files)
+    })
+    .then(r => r.json())
+    .then(() => location.reload());
+};
 </script>
 
+<script src="control.js"></script>
 </body>
 </html>
