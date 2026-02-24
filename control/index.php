@@ -1,11 +1,12 @@
 <?php
+$event = $_GET['event'] ?? 'event';
+
 $images = array_merge(
     glob("../uploads/*.jpg"),
     glob("../uploads/*.jpeg"),
     glob("../uploads/*.png"),
     glob("../uploads/*.webp")
 );
-
 sort($images);
 ?>
 <!DOCTYPE html>
@@ -18,20 +19,23 @@ sort($images);
 
 <h1>Control Panel</h1>
 
-<?php if (!$images): ?>
-<p>No images found.</p>
-<?php endif; ?>
-
+<form method="post" action="../download-selected.php?event=<?= urlencode($event) ?>">
 <div class="grid">
 <?php foreach ($images as $i => $img): ?>
 <div class="item">
-    <input type="checkbox">
+    <input type="checkbox" name="files[]" value="<?= htmlspecialchars($img) ?>">
     <img src="<?= htmlspecialchars($img) ?>" data-index="<?= $i ?>">
 </div>
 <?php endforeach; ?>
 </div>
 
-<!-- modal stays unchanged -->
+<div class="actions">
+    <button type="submit">Download Selected</button>
+    <a href="../download-selected.php?all=1&event=<?= urlencode($event) ?>">Download ALL (ZIP)</a>
+</div>
+</form>
+
+<!-- MODAL (KEEP) -->
 <div id="modal">
     <span id="close">×</span>
     <span id="prev">❮</span>
@@ -53,23 +57,11 @@ imgs.forEach(img => {
     };
 });
 
-document.getElementById("close").onclick = () => {
-    modal.classList.remove("active");
-};
+document.getElementById("close").onclick = () => modal.classList.remove("active");
+document.getElementById("prev").onclick = () => { idx=(idx-1+imgs.length)%imgs.length; modalImg.src=imgs[idx].src; };
+document.getElementById("next").onclick = () => { idx=(idx+1)%imgs.length; modalImg.src=imgs[idx].src; };
 
-document.getElementById("prev").onclick = () => {
-    idx = (idx - 1 + imgs.length) % imgs.length;
-    modalImg.src = imgs[idx].src;
-};
-
-document.getElementById("next").onclick = () => {
-    idx = (idx + 1) % imgs.length;
-    modalImg.src = imgs[idx].src;
-};
-
-modal.onclick = e => {
-    if (e.target === modal) modal.classList.remove("active");
-};
+modal.onclick = e => { if (e.target === modal) modal.classList.remove("active"); };
 </script>
 
 </body>
