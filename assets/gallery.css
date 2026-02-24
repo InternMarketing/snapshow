@@ -11,19 +11,18 @@ body {
     gap: 16px;
 }
 
-label {
+.cell {
     position: relative;
-    cursor: pointer;
 }
 
-input {
+.cell input {
     position: absolute;
     top: 8px;
     left: 8px;
     z-index: 2;
 }
 
-img {
+.cell img {
     width: 100%;
     border-radius: 10px;
 }
