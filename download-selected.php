@@ -1,33 +1,26 @@
 <?php
-if (empty($_POST['files']) || !is_array($_POST['files'])) {
-    exit('No files selected');
-}
+$event = $_GET['event'] ?? 'event';
+$all = isset($_GET['all']);
 
-$files = $_POST['files'];
-$zipName = 'snapshow_' . date('Ymd_His') . '.zip';
-$tmpPath = sys_get_temp_dir() . '/' . $zipName;
+$files = $all
+    ? array_merge(glob("uploads/*.jpg"), glob("uploads/*.jpeg"), glob("uploads/*.png"), glob("uploads/*.webp"))
+    : ($_POST['files'] ?? []);
 
-// Remove old archive if exists
-if (file_exists($tmpPath)) {
-    unlink($tmpPath);
-}
+if (!$files) exit("No files");
 
-// Create ZIP using PharData (ZipArchive-free)
-$zip = new PharData($tmpPath);
+$tmp = sys_get_temp_dir() . "/snapshow_" . time() . ".zip";
+$zip = new PharData($tmp);
 
+$i = 1;
 foreach ($files as $file) {
-    // Security: only allow uploads directory
-    if (strpos($file, 'uploads/') !== 0) continue;
     if (!file_exists($file)) continue;
-
-    $zip->addFile($file, basename($file));
+    $ext = pathinfo($file, PATHINFO_EXTENSION);
+    $zip->addFile($file, "{$event}_{$i}.{$ext}");
+    $i++;
 }
 
-// Force download
-header('Content-Type: application/zip');
-header('Content-Disposition: attachment; filename="' . $zipName . '"');
-header('Content-Length: ' . filesize($tmpPath));
-
-readfile($tmpPath);
-unlink($tmpPath);
+header("Content-Type: application/zip");
+header("Content-Disposition: attachment; filename=snapshow.zip");
+readfile($tmp);
+unlink($tmp);
 exit;
